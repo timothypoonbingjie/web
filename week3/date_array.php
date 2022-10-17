@@ -13,11 +13,12 @@
 
 <body>
  
-<div class="text-center">
+<div class="text-center mb-5">
     <h1>What Is Your Date Of Birth?</h1>
 </div>
-<div class="d-flex">
+<div class="d-flex justify-content-evenly">
     
+<div class="col-3">
 <select class="form-select bg-info" aria-label="Default select example">
   <option selected>Day</option>
   <?php
@@ -26,7 +27,9 @@
       } 
        ?>
 </select>
+</div>
 
+<div class="col-3">
 <select class="form-select bg-warning" aria-label="Default select example">
   <option selected>Month</option>
   <?php
@@ -38,7 +41,9 @@
       } 
        ?>
 </select>
+</div>
 
+<div class="col-3">
 <select class="form-select bg-danger" aria-label="Default select example">
   <option selected>Year</option>
   <?php
@@ -47,6 +52,7 @@
       } 
        ?>
 </select>
+</div>
 
 </div>
 
