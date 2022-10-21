@@ -3,7 +3,7 @@
 
 <head>
 
-    <title>Homework 2</title>
+    <title>EX 1</title>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,9 +22,14 @@
 <select class="form-select bg-info" aria-label="Default select example">
   <option selected>Day</option>
   <?php
-    for ($num = 1; $num <= 31; $num++) {
-        echo "<option value=\"$num\">$num</option>";
-      } 
+    $curdate = date("d");
+    for ($date=1; $date<=31; $date++) {
+        $state = "";
+        if ($curdate == $date) {
+            $state="selected";
+        }
+        echo "<option class= value=$date $state>$date</option>";
+    } 
        ?>
 </select>
 </div>
@@ -33,12 +38,19 @@
 <select class="form-select bg-warning" aria-label="Default select example">
   <option selected>Month</option>
   <?php
-  
-    $month = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
-
-    for ($num = 0; $num <= 11; $num++) {
-        echo "<option value=\"$num\">$month[$num]</option>";
+   $month = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+   $curmonth = date("n");
+      
+    for ($num = 1; $num <= 12; $num++) {
+        $mon = $num-1;
+        if($num == $curmonth){
+        echo "<option value=\"$num\" selected>$month[$mon]</option>";
       } 
+      else{
+        
+        echo "<option value=\"$num\">$month[$mon]</option>";
+      }
+    }
        ?>
 </select>
 </div>
@@ -47,9 +59,14 @@
 <select class="form-select bg-danger" aria-label="Default select example">
   <option selected>Year</option>
   <?php
-    for ($num = 2022; $num >= 1900; $num--) {
-        echo "<option value=\"$num\">$num</option>";
-      } 
+    $curyear = date("Y");
+    for ($year=1900; $year<=$curyear; $year++) {
+        $state = "";
+        if ($curyear == $year) {
+            $state="selected";
+        }
+        echo "<option class= value=$year $state>$year</option>";
+    } 
        ?>
 </select>
 </div>
