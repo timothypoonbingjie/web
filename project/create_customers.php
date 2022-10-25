@@ -23,12 +23,12 @@
 
 <body>
     <div>
-        <nav class="navbar navbar-expand-lg bg-info">
+    <nav class="navbar navbar-expand-lg bg-info">
             <div class="container-fluid ">
                 <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNav">
                     <ul class="navbar-nav nav">
                         <li class="nav-item">
-                            <a class="nav-link text-dark fs-5" aria-current="page" href="#">Home</a>
+                            <a class="nav-link text-dark fs-5" aria-current="page" href="home.html">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark fs-5" href="http://localhost/web/project/product_create.php">Create Product</a>
@@ -37,7 +37,7 @@
                             <a class="nav-link text-dark fs-5" href="http://localhost/web/project/create_customers.php">Create Customer</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark fs-5" href="#">Contact Us</a>
+                            <a class="nav-link text-dark fs-5" href="contact_us.html">Contact Us</a>
                         </li>
                     </ul>
                 </div>
@@ -126,7 +126,7 @@
                         <td>Gender</td>
                         <td>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" value="female" name="gender" checked>
+                                <input class="form-check-input" type="radio" value="female" name="gender">
                                 <label class="form-check-label" for="flexRadioDefault1">
                                     Female
                                 </label>
@@ -147,7 +147,7 @@
                         <td>Account status</td>
                         <td>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" value="opened" name="account_status" checked>
+                                <input class="form-check-input" type="radio" value="opened" name="account_status">
                                 <label class="form-check-label" for="flexRadioDefault1">
                                     Opened
                                 </label>
