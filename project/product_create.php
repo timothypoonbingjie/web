@@ -23,7 +23,7 @@
 
 <body>
     <div>
-    <nav class="navbar navbar-expand-lg bg-info">
+        <nav class="navbar navbar-expand-lg bg-info">
             <div class="container-fluid ">
                 <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNav">
                     <ul class="navbar-nav nav">
@@ -66,15 +66,60 @@
                 $date2 = date_create($expired_date);
                 $diff = date_diff($date1, $date2);
 
+                if ($name == "" || $description == "" || $price == "" || $manufacture_date == "") {
+                    echo "Please make sure all fields are not empty";
+                }
+                $flag = 0;
+                if ($price == "") {
+                    echo "Please make sure price are not empty";
+                    $flag = 1;
+                } elseif (preg_match('/[A-Z]/', $price)) {
+                    echo "Please make sure price are not contain capital A-Z";
+                    $flag = 1;
+                } elseif (preg_match('/[a-z]/', $price)) {
+                    echo "Please make sure price are not contain capital a-z";
+                    $flag = 1;
+                } elseif ($price < 0) {
+                    echo "Please make sure price are not negative";
+                    $flag = 1;
+                } elseif ($price > 1000) {
+                    echo "Please make sure price are not more than RM1000";
+                    $flag = 1;
+                }
+
+                if ($promotion_price == "") {
+                    $promotion_price = NULL;
+                }
+                 elseif (preg_match('/[A-Z]/', $promotion_price)) {
+                    echo "Please make sure promotion price are not contain capital A-Z";
+                    $flag = 1;
+                } elseif (preg_match('/[a-z]/', $promotion_price)) {
+                    echo "Please make sure promotion price are not contain capital a-z";
+                    $flag = 1;
+                } elseif ($promotion_price < 0) {
+                    echo "Please make sure promotion price are not negative";
+                    $flag = 1;
+                } elseif ($promotion_price > 999) {
+                    echo "Please make sure promotion price are not more than RM999";
+                    $flag = 1;
+                }
+
+                if ($promotion_price > $price) {
+                    echo "Please make sure promotion price is not more than normal price";
+                    $flag = 1;
+                }
+
+                if ($expired_date == "") {
+                    $expired_date = NULL;
+                }
+
                 if ($promotion_price >= $price) {
                     echo "Please enter a cheaper price";
                 } elseif ($diff->format("%R%a") <= "0") {
                     echo "Expired date must be after the manufacture date";
                 } else {
 
-                    if ($name == "" || $description == "" || $price == "" || $promotion_price == "" || $manufacture_date == "" || $expired_date == "") {
-                        echo "Please make sure all fields are not empty";
-                    } else {
+                    if ($flag == 0) {
 
                         include 'config/database.php';
                         try {
@@ -106,6 +151,7 @@
                     }
                 }
             }
+
             ?>
 
             <!-- html form here where the product information will be entered -->
@@ -130,11 +176,11 @@
                     </tr>
                     <tr>
                         <td>Manufacture Date</td>
-                        <td><input type='text' name='manufacture_date' class='form-control datepicker' /></td>
+                        <td><input type='date' name='manufacture_date' class='form-control' /></td>
                     </tr>
                     <tr>
                         <td>Expired Date</td>
-                        <td><input type='text' name='expired_date' class='form-control datepicker' /></td>
+                        <td><input type='date' name='expired_date' class='form-control' /></td>
                     </tr>
                     <tr>
                         <td></td>
