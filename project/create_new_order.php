@@ -36,7 +36,7 @@
         <div class="container">
 
             <div class="page-header d-flex justify-content-center my-3">
-                <h1>Create New Order</h1>
+                <h1>Create New Customers</h1>
             </div>
 
             <!-- html form to create product will be here -->
