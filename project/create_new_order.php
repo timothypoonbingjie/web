@@ -36,7 +36,7 @@
         <div class="container">
 
             <div class="page-header d-flex justify-content-center my-3">
-                <h1>Create Order</h1>
+                <h1>Create New Order</h1>
             </div>
 
             <!-- html form to create product will be here -->
@@ -341,8 +341,8 @@
                     <td></td>
                     <td colspan="3">
                         <input type='submit' value='Save' class='btn btn-primary' />
-                        <a href='order_read.php' class='btn btn-danger'>Back to read order summary</a>
-                        <a href='details_read.php' class='btn btn-danger'>Back to read order details</a>
+                        <a href='order_summary.php' class='btn btn-danger'>Back to read order summary</a>
+                        <a href='order_detials.php' class='btn btn-danger'>Back to read order details</a>
                     </td>
                     </tr>
                 </table>
