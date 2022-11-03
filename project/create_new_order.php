@@ -29,6 +29,15 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark fs-5" href="contact_us.html">Contact Us</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark fs-5" href="product_read.php">Read Product</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark fs-5" href="customers_read.php">Read Customers</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark fs-5" href="create_new_order.php">Create new order</a>
+                        </li>
                     </ul>
                 </div>
             </div>
