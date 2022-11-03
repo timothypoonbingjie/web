@@ -52,7 +52,7 @@
             // delete message prompt will be here
 
             // select all data
-            $query = "SELECT id, customer_order, amount, date FROM order_summary ORDER BY id DESC";
+            $query = "SELECT id, username, date FROM order_summary ORDER BY id DESC";
             $stmt = $con->prepare($query);
             $stmt->execute();
 
@@ -71,8 +71,7 @@
                 //creating our table heading
                 echo "<tr>";
                 echo "<th>ID</th>";
-                echo "<th>customer_order</th>";
-                echo "<th>amount</th>";
+                echo "<th>username</th>";
                 echo "<th>date</th>";
                 echo "</tr>";
 
@@ -85,8 +84,7 @@
                     // creating new table row per record
                     echo "<tr>";
                     echo "<td>{$id}</td>";
-                    echo "<th>{$customer_order}</th>";
-                    echo "<th>{$amount}</th>";
+                    echo "<th>{$username}</th>";
                     echo "<th>{$date}</th>";
                     echo "<td>";
                     // read one record
