@@ -100,7 +100,7 @@
                     </div>
                     <div class="form-floating ">
                         <input type="password" class="form-control" id="floatingPassword" placeholder="passwords" name="passwords">
-                        <label for="floatingPassword">Password</label>
+                        <label for="floatingPassword">Passwords</label>
                     </div>
 
                     <div class="checkbox mb-3">
