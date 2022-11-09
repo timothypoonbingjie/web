@@ -20,6 +20,7 @@ $host = "localhost";
 $db_name = "eshop";
 $username = "eshop";
 $password = "123Asdw123";
+$mysqli = new mysqli($host, $username, $password,$db_name);
   
 try {
     $con = new PDO("mysql:host={$host};dbname={$db_name}", $username, $password);

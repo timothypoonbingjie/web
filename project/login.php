@@ -66,7 +66,7 @@
             $row = mysqli_fetch_assoc($result);
             if (mysqli_num_rows($result) == 1) {
 
-                if ($row['user'] === $Username && $row['passwords'] === $passwords) {
+                if ($row['user'] === $user && $row['passwords'] === $passwords) {
                     if ($row['account_status'] != "opened") {
                         echo "<div class='alert alert-danger'>Your account is closed.</div>";
                     } else {
