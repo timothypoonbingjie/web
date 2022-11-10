@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE HTML>
 <html>
 
@@ -27,10 +30,10 @@
                             <a class="nav-link text-dark fs-5" aria-current="page" href="home.html">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark fs-5" href="http://localhost/web/project/product_create.php">Create Product</a>
+                            <a class="nav-link text-dark fs-5" href="product_create.php">Create Product</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark fs-5" href="http://localhost/web/project/create_customers.php">Create Customer</a>
+                            <a class="nav-link text-dark fs-5" href="create_customers.php">Create Customer</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark fs-5" href="contact_us.html">Contact Us</a>
@@ -55,7 +58,6 @@
         <?php
         // include database connection
         include 'config/database.php';
-        session_start();
         if (isset($_POST['user']) && isset($_POST['passwords'])) {
 
             $user = ($_POST['user']);
@@ -71,6 +73,7 @@
                         echo "<div class='alert alert-danger'>Your account is closed.</div>";
                     } else {
                         header("location:home.html");
+                        $_SESSION["Pass"] = "Pass";
                     }
                 }
             }
