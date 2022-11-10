@@ -56,42 +56,36 @@ session_start();
         </div>
 
         <?php
-        // include database connection
         include 'config/database.php';
+
         if (isset($_POST['user']) && isset($_POST['passwords'])) {
 
             $user = ($_POST['user']);
             $passwords = ($_POST['passwords']);
 
-            $select = " SELECT user, passwords, account_status FROM customers WHERE user = '$user' && passwords = '$passwords' ";
+            $select = "SELECT user, passwords, account_status FROM customers WHERE user = '$user'";
             $result = mysqli_query($mysqli, $select);
             $row = mysqli_fetch_assoc($result);
+
             if (mysqli_num_rows($result) == 1) {
-
-                if ($row['user'] === $user && $row['passwords'] === $passwords) {
-                    if ($row['account_status'] != "opened") {
-                        echo "<div class='alert alert-danger'>Your account is closed.</div>";
-                    } else {
-                        header("location:home.html");
-                        $_SESSION["Pass"] = "Pass";
-                    }
+                if ($row['passwords'] != $passwords) {
+                    echo "<div class='alert alert-danger'>Your password is incorrect.</div>";
+                } elseif ($row['account_status'] != "opened") {
+                    echo "<div class='alert alert-danger'>Your account is closed.</div>";
+                } else {
+                    header("Location: home.html");
+                    $_SESSION["Pass"] = "Pass";
                 }
-            }
-            $findname = " SELECT user FROM customers WHERE user = '$user'";
-            $result2 = mysqli_query($mysqli, $findname);
-            $row = mysqli_fetch_assoc($result2);
-            if (mysqli_num_rows($result2) == 0) {
-                echo "<div class='alert alert-danger'>Wrong user.</div>";
             } else {
-                $findpass = " SELECT Password FROM customers WHERE Password = '$passwords'";
-                $result3 = mysqli_query($mysqli, $findpass);
-                $row = mysqli_fetch_assoc($result3);
-                if (mysqli_num_rows($result3) == 0) {
-
-                    echo "<div class='alert alert-danger'>Wrong Password.</div>";
-                }
+                echo "<div class='alert alert-danger'>Wrong user name.</div>";
             }
+        };
+
+        if ($_GET) {
+            echo "Please make sure you have access";
         }
+
+
         ?>
 
         <div class="container d-flex justify-content-center mt-5">
