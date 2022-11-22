@@ -91,10 +91,10 @@ include 'check.php'
                     echo "<th>{$date}</th>";
                     echo "<td>";
                     // read one record
-                    echo "<a href='#' class='btn btn-info m-r-1em'>Read</a>";
+                    echo "<a href='order_list_read.php?id={$id}' class='btn btn-info m-r-1em'>Read</a>";
 
                     // we will use this links on next part of this post
-                    echo "<a href='#' class='btn btn-primary m-r-1em'>Edit</a>";
+                    echo "<a href='order_list_edit.php?id={$id}' class='btn btn-primary m-r-1em'>Edit</a>";
 
                     // we will use this links on next part of this post
                     echo "<a href='#' onclick='delete_product({$id});'  class='btn btn-danger'>Delete</a>";
