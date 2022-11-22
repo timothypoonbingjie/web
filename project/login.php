@@ -3,17 +3,12 @@ session_start();
 ?>
 <!DOCTYPE HTML>
 <html>
-
 <head>
-
-    <title>Create Product</title>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PDO - Read Records - PHP CRUD Tutorial</title>
+    <!-- Latest compiled and minified Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+
 
 </head>
 
@@ -21,36 +16,8 @@ session_start();
 
     <!-- container -->
     <div class="container">
-
-        <nav class="navbar navbar-expand-lg bg-info">
-            <div class="container-fluid ">
-                <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNav">
-                    <ul class="navbar-nav nav">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark fs-5" aria-current="page" href="home.html">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark fs-5" href="product_create.php">Create Product</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark fs-5" href="create_customers.php">Create Customer</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark fs-5" href="contact_us.html">Contact Us</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark fs-5" href="product_read.php">Read Product</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark fs-5" href="customers_read.php">Read Customers</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark fs-5" href="create_new_order.php">Create new order</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        
+       
         <div class="page-header d-flex justify-content-center my-3">
             <h1>Login Page</h1>
         </div>

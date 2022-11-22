@@ -1,19 +1,17 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
 
 <head>
-<title>PDO - Read Records - PHP CRUD Tutorial</title>
+    <title>Contact</title>
+
+    <title>PDO - Read Records - PHP CRUD Tutorial</title>
     <!-- Latest compiled and minified Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </head>
 
 <body>
-
-    <!-- container -->
-    <div class="container">
+<div class="container">
         
         <nav class="navbar navbar-expand-lg bg-info">
        
@@ -59,73 +57,43 @@
             </div>
 
         </nav>
-        <div class="page-header">
-            <h1>Read order</h1>
+
+        <div class="d-flex justify-content-center mt-5">
+            <h1>Contact Us</h1>
         </div>
 
-        <?php
-        // get passed parameter value, in this case, the record ID
-        // isset() is a PHP function used to verify if a value is there or not
-        $id = isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
+        <div class="row m-5">
+            <div class="col">
+              Email:<br>
+              timothypoon1015@e.newera.edu.my  
+            </div>
+            <div class="col">
+              Phone:<br>
+              013-9331358
+            </div>
+            <div class="col">
+              Instagram:<br>
+              zhe_1026
+            </div>
+          </div>
 
-        //include database connection
-        include 'config/database.php';
+          <div class="d-flex justify-content-center mt-5">
+            <h1>Suggestion</h1>
+        </div>
 
-        // read current record's data
-        try {
-            // prepare select query
-            $query = "SELECT id, username, date FROM order_summary WHERE id = :id ";
-            $stmt = $con->prepare($query);
+        <form>
+            <div class="mb-3">
+              <label for="name" class="form-label">Name</label>
+              <input type="text" class="form-control" id="name">
+            </div>
+            <div class="mb-3">
+              <label for="suggestion" class="form-label">Suggestion</label>
+              <textarea type="text" class="form-control" id="suggestion"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
 
-            // Bind the parameter
-            $stmt->bindParam(":id", $id);
-
-            // execute our query
-            $stmt->execute();
-
-            // store retrieved row to a variable
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            // values to fill up our form
-            $id = $row['id'];
-            $username = $row['username'];
-            $date = $row['date'];
-            // shorter way to do that is extract($row)
-        }
-
-        // show error
-        catch (PDOException $exception) {
-            die('ERROR: ' . $exception->getMessage());
-        }
-        ?>
-
-
-
-        <!--we have our html table here where the record will be displayed-->
-        <table class='table table-hover table-responsive table-bordered'>
-            <tr>
-                <td>Name</td>
-                <td><?php echo htmlspecialchars($id, ENT_QUOTES);  ?></td>
-            </tr>
-            <tr>
-                <td>Description</td>
-                <td><?php echo htmlspecialchars($username, ENT_QUOTES);  ?></td>
-            </tr>
-            <tr>
-                <td>Price</td>
-                <td><?php echo htmlspecialchars($date, ENT_QUOTES);  ?></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <a href='order_summary.php' class='btn btn-danger'>Back to read products</a>
-                </td>
-            </tr>
-        </table>
-
-
-    </div> <!-- end .container -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    </div>
 </body>
 
 </html>
