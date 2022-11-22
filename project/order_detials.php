@@ -55,7 +55,7 @@ include 'check.php'
         // delete message prompt will be here
 
         // select all data
-        $query = "SELECT id, order_id, product_id, quantity FROM order_detials ORDER BY id DESC";
+        $query = "SELECT details_id, order_id, product_id, quantity FROM order_detials ORDER BY details_id DESC";
         $stmt = $con->prepare($query);
         $stmt->execute();
 
@@ -73,7 +73,7 @@ include 'check.php'
 
             //creating our table heading
             echo "<tr>";
-            echo "<th>ID</th>";
+            echo "<th>details_id</th>";
             echo "<th>order_id</th>";
             echo "<th>product_id</th>";
             echo "<th>quantity</th>";
@@ -87,19 +87,19 @@ include 'check.php'
                 extract($row);
                 // creating new table row per record
                 echo "<tr>";
-                echo "<td>{$id}</td>";
+                echo "<td>{$details_id}</td>";
                 echo "<th>{$order_id}</th>";
                 echo "<th>{$product_id}</th>";
                 echo "<th>{$quantity}</th>";
                 echo "<td>";
                 // read one record
-                echo "<a href='#' class='btn btn-info m-r-1em'>Read</a>";
+                echo "<a href='order_details_read_one.php?id={$details_id}' class='btn btn-info m-r-1em'>Read</a>";
 
                 // we will use this links on next part of this post
                 echo "<a href='#' class='btn btn-primary m-r-1em'>Edit</a>";
 
                 // we will use this links on next part of this post
-                echo "<a href='#' onclick='delete_product({$id});'  class='btn btn-danger'>Delete</a>";
+                echo "<a href='#' onclick='delete_product({$details_id});'  class='btn btn-danger'>Delete</a>";
                 echo "</td>";
                 echo "</tr>";
             }
