@@ -104,15 +104,15 @@
         <!--we have our html table here where the record will be displayed-->
         <table class='table table-hover table-responsive table-bordered'>
             <tr>
-                <td>Name</td>
+                <td>ID</td>
                 <td><?php echo htmlspecialchars($id, ENT_QUOTES);  ?></td>
             </tr>
             <tr>
-                <td>Description</td>
+                <td>Username</td>
                 <td><?php echo htmlspecialchars($username, ENT_QUOTES);  ?></td>
             </tr>
             <tr>
-                <td>Price</td>
+                <td>Date</td>
                 <td><?php echo htmlspecialchars($date, ENT_QUOTES);  ?></td>
             </tr>
             <tr>
