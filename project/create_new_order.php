@@ -71,7 +71,7 @@ include 'check.php'
             <?php
 
             if ($_POST) {
-                $user = $_POST['user'];
+                $username = $_POST['username'];
                 $product_id = $_POST['product_id'];
                 $quantity = $_POST['quantity'];
                 $flag = 0;
@@ -140,7 +140,7 @@ include 'check.php'
                     <tr>
                         <td>Customer username</td>
                         <td colspan="3">
-                            <select class="form-select form-select-lg mb-3" name="user" aria-label=".form-select-lg example">
+                            <select class="form-select form-select-lg mb-3" name="username" aria-label=".form-select-lg example">
                                 <option>Select Customer Username</option>
                                 <?php
 
