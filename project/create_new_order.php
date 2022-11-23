@@ -161,7 +161,7 @@ include 'check.php'
                                         extract($row);
                                         // creating new table row per record
 
-                                        echo "<option value=\"$username\">$username</option>";
+                                        echo "<option value=\"$user\">$user</option>";
                                     }
                                 }
                                 ?>
