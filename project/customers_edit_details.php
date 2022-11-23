@@ -160,8 +160,8 @@
                     <td>
                         <div><input disabled type='text' name="account_status" value="<?php echo htmlspecialchars($account_status, ENT_QUOTES);  ?>" /></div>
                         <div class="ms-4 col-2 form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="account_status" id="inlineRadio3" value="active" checked>
-                            <label class="form-check-label" for="inlineRadio3">Active</label>
+                            <input class="form-check-input" type="radio" name="account_status" id="inlineRadio3" value="opened" checked>
+                            <label class="form-check-label" for="inlineRadio3">Opened</label>
                         </div>
                         <div class="col-2 form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="account_status" id="inlineRadio4" value="closed">
