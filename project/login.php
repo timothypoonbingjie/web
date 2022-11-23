@@ -40,7 +40,7 @@ session_start();
                 } elseif ($row['account_status'] != "opened") {
                     echo "<div class='alert alert-danger'>Your account is closed.</div>";
                 } else {
-                    header("Location: home.html");
+                    header("Location: home.php");
                     $_SESSION["Pass"] = "Pass";
                 }
             } else {
@@ -74,6 +74,7 @@ session_start();
                     </div>
                     <button class="w-50 btn btn-lg btn-primary" type="submit">Login</button>
                 </table>
+                <a href="create_customers.php">Register now</a>
             </form>
         </div>
 
