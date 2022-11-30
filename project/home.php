@@ -66,6 +66,10 @@
             <h1>Hello World</h1>
         </div>
 
+        <div class="d-flex justify-content-center mt-5">
+            <a href="log_out.php">Log Out</a>
+        </div>
+
     </div>
 </body>
 
