@@ -5,17 +5,17 @@ include 'check.php'
 <html>
 
 <head>
-<title>PDO - Read Records - PHP CRUD Tutorial</title>
+    <title>PDO - Read Records - PHP CRUD Tutorial</title>
     <!-- Latest compiled and minified Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 </head>
 
 <body>
-<div class="container">
-        
+    <div class="container">
+
         <nav class="navbar navbar-expand-lg bg-info">
-       
+
             <a class="navbar-brand " href="home.php">Home</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -83,7 +83,7 @@ include 'check.php'
             // read current record's data
             try {
                 // prepare select query
-                $query = "SELECT id, name, description, price FROM products WHERE id = :id ";
+                $query = "SELECT * FROM products WHERE id = :id ";
                 $stmt = $con->prepare($query);
 
                 // Bind the parameter
@@ -99,6 +99,7 @@ include 'check.php'
                 $name = $row['name'];
                 $description = $row['description'];
                 $price = $row['price'];
+                $image = $row['image'];
                 // shorter way to do that is extract($row)
             }
 
@@ -124,6 +125,10 @@ include 'check.php'
                 <tr>
                     <td>Price</td>
                     <td><?php echo htmlspecialchars($price, ENT_QUOTES);  ?></td>
+                </tr>
+                <tr>
+                    <td>Images</td>
+                    <td><img src="uploads/<?php echo htmlspecialchars($image, ENT_QUOTES);  ?>" /></td>
                 </tr>
                 <tr>
                     <td></td>
