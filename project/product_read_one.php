@@ -134,6 +134,8 @@ include 'check.php'
                     <td></td>
                     <td>
                         <a href='product_read.php' class='btn btn-danger'>Back to read products</a>
+                    
+                        <a href='product_edit.php' class='btn btn-success'>Go to product edit</a>
                     </td>
                 </tr>
             </table>
