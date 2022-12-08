@@ -119,95 +119,101 @@
         <?php
         // check if form was submitted
         if ($_POST) {
-            try {
-                // write update query
-                // in this case, it seemed like we have so many fields to pass and
-                // it is better to label them and not use question marks
-                $query = "UPDATE products
-                  SET name=:name, description=:description,
-   price=:price, image=:image WHERE id = :id";
-                // prepare query for excecution
-                $stmt = $con->prepare($query);
-                // posted values
-                $name = htmlspecialchars(strip_tags($_POST['name']));
-                $description = htmlspecialchars(strip_tags($_POST['description']));
-                $price = htmlspecialchars(strip_tags($_POST['price']));
-                $image = !empty($_FILES["image"]["name"])
-                    ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"])
-                    : "";
-                $image = htmlspecialchars(strip_tags($image));
-                $stmt->bindParam(':image', $image);
-                // bind the parameters
-                $stmt->bindParam(':name', $name);
-                $stmt->bindParam(':description', $description);
-                $stmt->bindParam(':price', $price);
-                $stmt->bindParam(':id', $id);
-                // Execute the query
-                if ($stmt->execute()) {
-                    echo "<div class='alert alert-success'>Record was updated.</div>";
-                    if ($image) {
 
-                        // upload to file to folder
-                        $target_directory = "uploads/";
-                        $target_file = $target_directory . $image;
-                        $file_type = pathinfo($target_file, PATHINFO_EXTENSION);
+            $price = $_POST['price'];
+            $image = !empty($_FILES["image"]["name"])
+                ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"])
+                : "";
+            $image = htmlspecialchars(strip_tags($image));
+            $error_message = "";
 
-                        // error message is empty
-                        $file_upload_error_messages = "";
-                        // make sure that file is a real image
-                        $check = getimagesize($_FILES["image"]["tmp_name"]);
-                        if ($check !== false) {
-                            // submitted file is an image
-                        } else {
-                            $file_upload_error_messages .= "<div>Submitted file is not an image.</div>";
-                        }
-                        // make sure certain file types are allowed
-                        $allowed_file_types = array("jpg", "jpeg", "png", "gif");
-                        if (!in_array($file_type, $allowed_file_types)) {
-                            $file_upload_error_messages .= "<div>Only JPG, JPEG, PNG, GIF files are allowed.</div>";
-                        }
-                        // make sure file does not exist
-                        if (file_exists($target_file)) {
-                            $file_upload_error_messages .= "<div>Image already exists. Try to change file name.</div>";
-                        }
-                        // make sure submitted file is not too large, can't be larger than 1 MB
-                        if ($_FILES['image']['size'] > (1024000)) {
-                            $file_upload_error_messages .= "<div>Image must be less than 1 MB in size.</div>";
-                        }
-                        // make sure the 'uploads' folder exists
-                        // if not, create it
-                        if (!is_dir($target_directory)) {
-                            mkdir($target_directory, 0777, true);
-                        }
-                        // if $file_upload_error_messages is still empty
-                        if (empty($file_upload_error_messages)) {
-                            // it means there are no errors, so try to upload the file
-                            if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-                                // it means photo was uploaded
-                            } else {
-                                echo "<div class='alert alert-danger'>";
-                                echo "<div>Unable to upload photo.</div>";
-                                echo "<div>Update the record to upload photo.</div>";
-                                echo "</div>";
-                            }
-                        }
+            if ($price == "") {
+                $error_message .= "<div class='alert alert-danger'>Please make sure price are not empty</div>";
+            } elseif (preg_match('/[A-Z]/', $price)) {
+                $error_message .= "<div class='alert alert-danger'>Please make sure price are not contain capital A-Z</div>";
+            } elseif (preg_match('/[a-z]/', $price)) {
+                $error_message .= "<div class='alert alert-danger'>Please make sure price are not contain capital a-z</div>";
+            } elseif ($price < 0) {
+                $error_message .= "<div class='alert alert-danger'>Please make sure price are not negative</div>";
+            } elseif ($price > 1000) {
+                $error_message .= "<div class='alert alert-danger'>Please make sure price are not more than RM1000</div>";
+            }
 
-                        // if $file_upload_error_messages is NOT empty
-                        else {
-                            // it means there are some errors, so show them to user
-                            echo "<div class='alert alert-danger'>";
-                            echo "<div>{$file_upload_error_messages}</div>";
-                            echo "<div>Update the record to upload photo.</div>";
-                            echo "</div>";
-                        }
+
+            // now, if image is not empty, try to upload the image
+            if ($image) {
+
+                // upload to file to folder
+                $target_directory = "uploads/";
+                $target_file = $target_directory . $image;
+                $file_type = pathinfo($target_file, PATHINFO_EXTENSION);
+
+                // make sure that file is a real image
+                $check = getimagesize($_FILES["image"]["tmp_name"]);
+                if ($check === false) {
+                    $error_message .= "<div class='alert alert-danger'>Submitted file is not an image.</div>";
+                }
+                // make sure certain file types are allowed
+                $allowed_file_types = array("jpg", "jpeg", "png", "gif");
+                if (!in_array($file_type, $allowed_file_types)) {
+                    $error_message .= "<div class='alert alert-danger'>Only JPG, JPEG, PNG, GIF files are allowed.</div>";
+                }
+                // make sure file does not exist
+                if (file_exists($target_file)) {
+                    $error_message .= "<div class='alert alert-danger'>Image already exists. Try to change file name.</div>";
+                }
+                // make sure submitted file is not too large, can't be larger than 1 MB
+                if ($_FILES['image']['size'] > (1024000)) {
+                    $error_message .= "<div class='alert alert-danger'>Image must be less than 1 MB in size.</div>";
+                }
+                // make sure the 'uploads' folder exists
+                // if not, create it
+                if (!is_dir($target_directory)) {
+                    mkdir($target_directory, 0777, true);
+                }
+                // if $file_upload_error_messages is still empty
+                if (empty($error_message)) {
+                    // it means there are no errors, so try to upload the file
+                    if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+                        echo "<div class='alert alert-danger>Unable to upload photo.</div>";
+                        echo "<div class='alert alert-danger>Update the record to upload photo.</div>";
                     }
-                } else {
-                    echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
                 }
             }
-            // show errors
-            catch (PDOException $exception) {
-                die('ERROR: ' . $exception->getMessage());
+
+            if (!empty($error_message)) {
+                echo "<div class='alert alert-danger'>{$error_message}</div>";
+            } else {
+
+                try {
+                    // write update query
+                    // in this case, it seemed like we have so many fields to pass and
+                    // it is better to label them and not use question marks
+                    $query = "UPDATE products SET name=:name, description=:description, price=:price, image=:image WHERE id = :id";
+                    // prepare query for excecution
+                    $stmt = $con->prepare($query);
+                    // posted values
+                    $name = htmlspecialchars(strip_tags($_POST['name']));
+                    $description = htmlspecialchars(strip_tags($_POST['description']));
+                    $price = htmlspecialchars(strip_tags($_POST['price']));
+                    $image = htmlspecialchars(strip_tags($image));                
+                    // bind the parameters
+                    $stmt->bindParam(':name', $name);
+                    $stmt->bindParam(':description', $description);
+                    $stmt->bindParam(':price', $price);
+                    $stmt->bindParam(':image', $image);
+                    $stmt->bindParam(':id', $id);
+                    // Execute the query
+                    if ($stmt->execute()) {
+                        echo "<div class='alert alert-success'>Record was updated.</div>";
+                    } else {
+                        echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
+                    }
+                }
+                // show errors
+                catch (PDOException $exception) {
+                    die('ERROR: ' . $exception->getMessage());
+                }
             }
         } ?>
 
