@@ -2,7 +2,7 @@
 <html>
 
 <head>
-<title>PDO - Read Records - PHP CRUD Tutorial</title>
+    <title>PDO - Read Records - PHP CRUD Tutorial</title>
     <!-- Latest compiled and minified Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
@@ -12,9 +12,9 @@
 
 <body>
     <div class="container">
-        
+
         <nav class="navbar navbar-expand-lg bg-info">
-       
+
             <a class="navbar-brand " href="home.php">Home</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -77,6 +77,11 @@
                 $gender = $_POST['gender'];
                 $date_of_birth = $_POST['date_of_birth'];
                 $account_status = $_POST['account_status'];
+                $image = !empty($_FILES["image"]["name"])
+                    ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"])
+                    : htmlspecialchars($image, ENT_QUOTES);
+                $image = htmlspecialchars(strip_tags($image));
+                $error_message = "";
 
                 // include database connection
 
@@ -90,11 +95,10 @@
                 if (strpos($world, $space) !== false) {
                     echo "Username should not space";
                     $flag = 1;
-                  
                 } elseif (strlen($user) < 6) {
                     echo "Username need at least 6 charecter";
                     $flag = 1;
-                } 
+                }
                 if ($passwords == "") {
                     echo "Please enter your password";
                     $flag = 1;
@@ -111,83 +115,141 @@
                     echo "Password need at least 8 charecter";
                     $flag = 1;
                 }
-            
 
-            if ($confirm_passwords == "") {
-                echo "Please enter your confirm password";
-                $flag = 1;
-            } elseif ($passwords != $confirm_passwords) {
-                echo "Password need same with confirm password";
-                $flag = 1;
-            } 
 
-            if ($first_name == "") {
-                echo "Please enter your first name";
-                $flag = 1;
-            }
+                if ($confirm_passwords == "") {
+                    echo "Please enter your confirm password";
+                    $flag = 1;
+                } elseif ($passwords != $confirm_passwords) {
+                    echo "Password need same with confirm password";
+                    $flag = 1;
+                }
 
-            if ($last_name == "") {
-                echo "Please enter your last name";
-                $flag = 1;
-            }
+                if ($first_name == "") {
+                    echo "Please enter your first name";
+                    $flag = 1;
+                }
 
-            if ($gender == "") {
-                echo "Please do not empty gender";
-                $flag = 1;
-            }
+                if ($last_name == "") {
+                    echo "Please enter your last name";
+                    $flag = 1;
+                }
 
-            if ($date_of_birth == "") {
-                echo "Please enter your date of birth";
-                $flag = 1;
-            }
-            $day = $_POST['date_of_birth'];
+                if ($gender == "") {
+                    echo "Please do not empty gender";
+                    $flag = 1;
+                }
+
+                if ($date_of_birth == "") {
+                    echo "Please enter your date of birth";
+                    $flag = 1;
+                }
+                $day = $_POST['date_of_birth'];
                 $today = date("Ymd");
                 $date1 = date_create($day);
                 $date2 = date_create($today);
                 $diff = date_diff($date1, $date2);
                 if ($diff->format("%y") <= "18") {
                     echo "User need atleast 18 years old";
-                    $flag =1;
+                    $flag = 1;
                 }
 
-            if ($account_status == "") {
-                echo "Please do not empty account status";
-                $flag = 1;
-            }
+                if ($account_status == "") {
+                    echo "Please do not empty account status";
+                    $flag = 1;
+                }
+                if ($_FILES["image"]["name"]) {
 
-            if ($flag == 0) {
+                    $target_directory = "uploads/";
+                    $target_file = $target_directory . $image;
+                    $file_type = pathinfo($target_file, PATHINFO_EXTENSION);
 
 
-                include 'config/database.php';
+                    $check = getimagesize($_FILES["image"]["tmp_name"]);
+                    if ($check === false) {
+                        $error_message .= "<div class='alert alert-danger'>Submitted file is not an image.</div>";
+                    }
 
-                try {
-                    // insert query
-                    $query = "INSERT INTO customers SET user=:user, passwords=:passwords, first_name=:first_name, last_name=:last_name, gender=:gender, date_of_birth=:date_of_birth, register_date=:register_date,account_status=:account_status";
-                    // prepare query for execution
-                    $stmt = $con->prepare($query);
-                    // bind the parameters
-                    $stmt->bindParam(':user', $user);
-                    $stmt->bindParam(':passwords', $passwords);
-                    $stmt->bindParam(':first_name', $first_name);
-                    $stmt->bindParam(':last_name', $last_name);
-                    $stmt->bindParam(':gender', $gender);
-                    $stmt->bindParam(':date_of_birth', $date_of_birth);
-                    $stmt->bindParam(':account_status', $account_status);
-                    $register_date = date('Y-m-d H:i:s'); // get the current date and time
-                    $stmt->bindParam(':register_date', $register_date);
-                    // Execute the query
-                    if ($stmt->execute()) {
-                        echo "<div class='alert alert-success'>Record was saved.</div>";
-                    } else {
-                        echo "<div class='alert alert-danger'>Unable to save record.</div>";
+                    $allowed_file_types = array("jpg", "jpeg", "png", "gif");
+                    if (!in_array($file_type, $allowed_file_types)) {
+                        $error_message .= "<div class='alert alert-danger'>Only JPG, JPEG, PNG, GIF files are allowed.</div>";
+                    }
+
+                    if (file_exists($target_file)) {
+                        $error_message .= "<div class='alert alert-danger'>Image already exists. Try to change file name.</div>";
+                    }
+
+                    if ($_FILES['image']['size'] > (1024000)) {
+                        $error_message .= "<div class='alert alert-danger'>Image must be less than 1 MB in size.</div>";
+                    }
+
+                    if (!is_dir($target_directory)) {
+                        mkdir($target_directory, 0777, true);
+                    }
+
+                    if (empty($error_message)) {
+                        // it means there are no errors, so try to upload the file
+                        if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+                            echo "<div class='alert alert-danger>Unable to upload photo.</div>";
+                            echo "<div class='alert alert-danger>Update the record to upload photo.</div>";
+                        }
                     }
                 }
-                // show error
-                catch (PDOException $exception) {
-                    die('ERROR: ' . $exception->getMessage());
+                if (isset($_POST['delete'])) {
+                    $image = htmlspecialchars(strip_tags($image));
+
+                    $image = !empty($_FILES["image"]["name"])
+                        ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"])
+                        : "";
+                    $target_directory = "uploads/";
+                    $target_file = $target_directory . $image;
+                    $file_type = pathinfo($target_file, PATHINFO_EXTENSION);
+
+                    unlink("uploads/" . $row['image']);
+                    $_POST['image'] = null;
+                    $query = "UPDATE products
+                                SET image=:image WHERE id = :id";
+                    // prepare query for excecution
+                    $stmt = $con->prepare($query);
+                    $stmt->bindParam(':image', $image);
+                    $stmt->bindParam(':id', $id);
+                    // Execute the query
+                    $stmt->execute();
+                }
+                if ($flag == 0) {
+
+
+                    include 'config/database.php';
+
+                    try {
+                        // insert query
+                        $query = "INSERT INTO customers SET user=:user, passwords=:passwords, first_name=:first_name, last_name=:last_name, gender=:gender, date_of_birth=:date_of_birth, register_date=:register_date,account_status=:account_status, image=:image";
+                        // prepare query for execution
+                        $stmt = $con->prepare($query);
+                        // bind the parameters
+                        $stmt->bindParam(':user', $user);
+                        $stmt->bindParam(':passwords', $passwords);
+                        $stmt->bindParam(':first_name', $first_name);
+                        $stmt->bindParam(':last_name', $last_name);
+                        $stmt->bindParam(':gender', $gender);
+                        $stmt->bindParam(':date_of_birth', $date_of_birth);
+                        $stmt->bindParam(':account_status', $account_status);
+                        $register_date = date('Y-m-d H:i:s'); // get the current date and time
+                        $stmt->bindParam(':register_date', $register_date);
+                        $stmt->bindParam(':image', $image);
+                        // Execute the query
+                        if ($stmt->execute()) {
+                            echo "<div class='alert alert-success'>Record was saved.</div>";
+                        } else {
+                            echo "<div class='alert alert-danger'>Unable to save record.</div>";
+                        }
+                    }
+                    // show error
+                    catch (PDOException $exception) {
+                        die('ERROR: ' . $exception->getMessage());
+                    }
                 }
             }
-        }
 
             ?>
 
@@ -214,6 +276,13 @@
                     <tr>
                         <td>Last name</td>
                         <td><input type='text' name='last_name' class='form-control' /></td>
+                    </tr>
+                    <tr>
+                        <td>Images</td>
+                        <td>
+                            <input type="file" name="image" />
+                            <input type='submit' name='delete' value='Delete Image' class='btn btn-danger' />
+                        </td>
                     </tr>
                     <tr>
                         <td>Gender</td>

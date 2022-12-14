@@ -85,9 +85,6 @@ include 'check.php'
                 $promotion_price = $_POST['promotion_price'];
                 $manufacture_date = $_POST['manufacture_date'];
                 $expired_date = $_POST['expired_date'];
-                $date1 = date_create($manufacture_date);
-                $date2 = date_create($expired_date);
-                $diff = date_diff($date1, $date2);
                 $image = !empty($_FILES["image"]["name"])
                     ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"])
                     : "";
@@ -98,27 +95,16 @@ include 'check.php'
                 }
                 if ($price == "") {
                     $error_message .= "<div class='alert alert-danger'>Please make sure price are not empty</div>";
-                } elseif (preg_match('/[A-Z]/', $price)) {
-                    $error_message .= "<div class='alert alert-danger'>Please make sure price are not contain capital A-Z</div>";
-                } elseif (preg_match('/[a-z]/', $price)) {
-                    $error_message .= "<div class='alert alert-danger'>Please make sure price are not contain capital a-z</div>";
-                } elseif ($price < 0) {
-                    $error_message .= "<div class='alert alert-danger'>Please make sure price are not negative</div>";
+                } elseif (!is_numeric($price)) {
+                    $error_message .= "<div class='alert alert-danger'>Please make sure price only numbers</div>";
                 } elseif ($price > 1000) {
                     $error_message .= "<div class='alert alert-danger'>Please make sure price are not more than RM1000</div>";
                 }
 
                 if ($promotion_price == "") {
                     $promotion_price = NULL;
-                } elseif (preg_match('/[A-Z]/', $promotion_price)) {
-                    $error_message .= "<div class='alert alert-danger'>Please make sure promotion price are not contain capital A-Z</div>";
-                } elseif (preg_match('/[a-z]/', $promotion_price)) {
-                    $error_message .= "<div class='alert alert-danger'>Please make sure promotion price are not contain capital a-z</div>";
-                } elseif ($promotion_price < 0) {
-                    $error_message .= "<div class='alert alert-danger'>Please make sure promotion price are not negative</div>";
-                } elseif ($promotion_price > 999) {
-                    $error_message .= "<div class='alert alert-danger'>Please make sure promotion price are not more than RM999</div>";
-                }
+                 
+                } 
 
                 if ($promotion_price > $price) {
                     $error_message .= "<div class='alert alert-danger'>Please make sure promotion price is not more than normal price";
@@ -126,12 +112,17 @@ include 'check.php'
 
                 if ($expired_date == "") {
                     $expired_date = NULL;
+                }else {
+                    $date1 = date_create($manufacture_date);
+                    $date2 = date_create($expired_date);
+                    $diff = date_diff($date1, $date2);
+                    if ($diff->format("%R%a") <= "0") {
+                        $error_message .= "<div class='alert alert-danger'>Expired date must be after the manufacture date</div>";
+                    }
                 }
 
                 if ($promotion_price >= $price) {
                     $error_message .= "<div class='alert alert-danger'>Please enter a cheaper price</div>";
-                } elseif ($diff->format("%R%a") <= "0") {
-                    $error_message .= "<div class='alert alert-danger'>Expired date must be after the manufacture date</div>";
                 }
                 if ($image) {
 

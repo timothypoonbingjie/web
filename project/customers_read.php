@@ -80,7 +80,7 @@ include 'check.php'
 
 
             // select all data
-            $query = "SELECT id, user, first_name, last_name, gender, date_of_birth, register_date, account_status FROM customers ORDER BY id DESC";
+            $query = "SELECT * FROM customers ORDER BY id DESC";
             $stmt = $con->prepare($query);
             $stmt->execute();
 
@@ -105,6 +105,7 @@ include 'check.php'
                 echo "<th>gender</th>";
                 echo "<th>date_of_birth</th>";
                 echo "<th>register_date</th>";
+                echo "<th>Image</th>";
                 echo "<th>account_status</th>";
                 echo "</tr>";
 
@@ -123,6 +124,7 @@ include 'check.php'
                     echo "<th>{$gender}</th>";
                     echo "<th>{$date_of_birth}</th>";
                     echo "<th>{$register_date}</th>";
+                    echo "<td><img src= 'uploads/$image' class='w-25'></td>";
                     echo "<th>{$account_status}</th>";
                     echo "<td>";
                     // read one record

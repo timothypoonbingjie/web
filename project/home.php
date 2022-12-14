@@ -84,7 +84,7 @@
                 echo "<th>Total Number of Products</th>";
                 echo "<th>Total Number of Order</th>";
                 echo "</tr>";
-                echo "<tr class='table-dark'>";
+                echo "<tr class='table-success'>";
                 echo "<td>$customer</td>";
                 echo "<td>$products</td>";
                 echo "<td>$order</td>";
@@ -138,7 +138,7 @@
                         <th>Order Date</th>
                         <th>Username</th>
                     </tr>
-                    <tr class='table-dark'>
+                    <tr class='table-success'>
                         <td><?php echo htmlspecialchars($id, ENT_QUOTES);  ?></td>
                         <td><?php echo htmlspecialchars($date, ENT_QUOTES);  ?></td>
                         <td><?php echo htmlspecialchars($username, ENT_QUOTES);  ?></td>
@@ -157,14 +157,14 @@
 
                     ?>
                     <h1 class="text-center">Highest Purchased Amount Order</h1>
-                    <table class='table table-dark table-hover table-responsive table-bordered text-center'>
+                    <table class='table table-success table-hover table-responsive table-bordered text-center'>
                         <tr class='table-light'>
                             <th>Order ID</th>
                             <th>Order Date</th>
                             <th>Username</th>
                             <th>Highest Amount</th>
                         </tr>
-                        <tr class='table-dark'>
+                        <tr class='table-success'>
                             <td><?php echo htmlspecialchars($id, ENT_QUOTES);  ?></td>
                             <td><?php echo htmlspecialchars($date, ENT_QUOTES);  ?></td>
                             <td><?php echo htmlspecialchars($username, ENT_QUOTES);  ?></td>
@@ -183,12 +183,12 @@
                     $count = $stmt->rowCount();
                     if ($count > 0) {
                         echo "<h1 class=\"text-center\">Top 5 Selling Product</h1>";
-                        echo "<table class='table table-dark table-hover table-responsive table-bordered text-center'>";
+                        echo "<table class='table table-success table-hover table-responsive table-bordered text-center'>";
                         echo "<tr class='table-light'><th>Product Name</th>
                  <th>Quantity</th></tr>";
                         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                             extract($row);
-                            echo "<tr class='table-dark'>";
+                            echo "<tr class='table-success'>";
                             echo "<td>{$name}</td>";
                             echo "<td>{$popular}</td>";
                             echo "</tr>";
@@ -210,7 +210,7 @@
                             <th>Product Name</th>";
                         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                             extract($row);
-                            echo "<tr class='table-dark'>";
+                            echo "<tr class='table-success'>";
                             echo "<td>{$name}</td>";
                             echo "</tr>";
                         }

@@ -87,7 +87,7 @@ include 'check.php'
             // read current record's data
             try {
                 // prepare select query
-                $query = "SELECT id, user, first_name, last_name, gender, date_of_birth, register_date, account_status FROM customers ORDER BY id DESC";
+                $query = "SELECT * FROM customers ORDER BY id DESC";
                 $stmt = $con->prepare($query);
 
                 // Bind the parameter
@@ -107,6 +107,7 @@ include 'check.php'
                 $date_of_birth = $row['date_of_birth'];
                 $register_date = $row['register_date'];
                 $account_status = $row['account_status'];
+                $image = $row['image'];
 
                 // shorter way to do that is extract($row)
             }
@@ -137,6 +138,10 @@ include 'check.php'
                 <tr>
                     <td>gender</td>
                     <td><?php echo htmlspecialchars($gender, ENT_QUOTES);  ?></td>
+                </tr>
+                <tr>
+                    <td>Images</td>
+                    <td><img src="uploads/<?php echo htmlspecialchars($image, ENT_QUOTES);  ?>" /></td>
                 </tr>
                 <tr>
                     <td>date_of_birth</td>

@@ -123,25 +123,22 @@
             $price = $_POST['price'];
             $image = !empty($_FILES["image"]["name"])
                 ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"])
-                : "";
+                : htmlspecialchars($image, ENT_QUOTES);
             $image = htmlspecialchars(strip_tags($image));
             $error_message = "";
 
             if ($price == "") {
                 $error_message .= "<div class='alert alert-danger'>Please make sure price are not empty</div>";
-            } elseif (preg_match('/[A-Z]/', $price)) {
-                $error_message .= "<div class='alert alert-danger'>Please make sure price are not contain capital A-Z</div>";
-            } elseif (preg_match('/[a-z]/', $price)) {
-                $error_message .= "<div class='alert alert-danger'>Please make sure price are not contain capital a-z</div>";
-            } elseif ($price < 0) {
-                $error_message .= "<div class='alert alert-danger'>Please make sure price are not negative</div>";
-            } elseif ($price > 1000) {
+            } elseif (!is_numeric($price)) {
+                $error_message .= "<div class='alert alert-danger'>Please make sure price only numbers</div>";
+            }
+             elseif ($price > 1000) {
                 $error_message .= "<div class='alert alert-danger'>Please make sure price are not more than RM1000</div>";
             }
 
 
             // now, if image is not empty, try to upload the image
-            if ($image) {
+            if ($_FILES["image"]["name"]) {
 
                 // upload to file to folder
                 $target_directory = "uploads/";
@@ -180,6 +177,27 @@
                     }
                 }
             }
+            if (isset($_POST['delete'])) {
+                $image = htmlspecialchars(strip_tags($image));
+
+                $image = !empty($_FILES["image"]["name"])
+                    ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"])
+                    : "";
+                $target_directory = "uploads/";
+                $target_file = $target_directory . $image;
+                $file_type = pathinfo($target_file, PATHINFO_EXTENSION);
+
+                unlink("uploads/" . $row['image']);
+                $_POST['image'] = null;
+                $query = "UPDATE products
+                            SET image=:image WHERE id = :id";
+                // prepare query for excecution
+                $stmt = $con->prepare($query);
+                $stmt->bindParam(':image', $image);
+                $stmt->bindParam(':id', $id);
+                // Execute the query
+                $stmt->execute();
+            }
 
             if (!empty($error_message)) {
                 echo "<div class='alert alert-danger'>{$error_message}</div>";
@@ -196,7 +214,7 @@
                     $name = htmlspecialchars(strip_tags($_POST['name']));
                     $description = htmlspecialchars(strip_tags($_POST['description']));
                     $price = htmlspecialchars(strip_tags($_POST['price']));
-                    $image = htmlspecialchars(strip_tags($image));                
+                    $image = htmlspecialchars(strip_tags($image));
                     // bind the parameters
                     $stmt->bindParam(':name', $name);
                     $stmt->bindParam(':description', $description);
@@ -238,6 +256,7 @@
                     <td>Images</td>
                     <td><img src="uploads/<?php echo htmlspecialchars($image, ENT_QUOTES);  ?>" />
                         <input type="file" name="image" value="<?php echo htmlspecialchars($image, ENT_QUOTES);  ?>" />
+                        <input type='submit' name='delete' value='Delete Image' class='btn btn-danger' />
                     </td>
                 </tr>
                 <tr>

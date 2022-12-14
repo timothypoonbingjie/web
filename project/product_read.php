@@ -78,7 +78,7 @@ include 'check.php'
 
 
             // select all data
-            $query = "SELECT id, name, description, price FROM products ORDER BY id DESC";
+            $query = "SELECT * FROM products ORDER BY id DESC";
             $stmt = $con->prepare($query);
             $stmt->execute();
 
@@ -99,6 +99,8 @@ include 'check.php'
                 echo "<th>ID</th>";
                 echo "<th>Name</th>";
                 echo "<th>Description</th>";
+                echo "<th>Price</th>";
+                echo "<th>Image</th>";
                 echo "<th>Action</th>";
                 echo "</tr>";
 
@@ -113,6 +115,9 @@ include 'check.php'
                     echo "<td>{$id}</td>";
                     echo "<td>{$name}</td>";
                     echo "<td>{$description}</td>";
+                    $price = number_format((float)$price, 2, '.', '');
+                    echo "<td>{$price}</td>";
+                    echo "<td><img src= 'uploads/$image' class='w-25'></td>";
                     echo "<td>";
                     // read one record
                     echo "<a href='product_read_one.php?id={$id}' class='btn btn-info m-r-1em'>Read</a>";
