@@ -54,7 +54,7 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="create_new_order.php">create order</a></li>
                             <li><a class="dropdown-item" href="order_summary.php">order list</a></li>
-                            <li><a class="dropdown-item" href="order_detials.php">order details</a></li>
+                            
                         </ul>
                     </li>
                     <li class="nav-item dropdown">

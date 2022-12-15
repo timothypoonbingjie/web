@@ -40,7 +40,7 @@ include 'check.php'
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="create_new_order.php">create order</a></li>
                             <li><a class="dropdown-item" href="order_summary.php">order list</a></li>
-                            <li><a class="dropdown-item" href="order_detials.php">order details</a></li>
+                            
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -72,6 +72,12 @@ include 'check.php'
             include 'config/database.php';
 
             // delete message prompt will be here
+            $action = isset($_GET['action']) ? $_GET['action'] : "";
+
+            // if it was redirected from delete.php
+            if ($action == 'deleted') {
+                echo "<div class='alert alert-success'>Record was deleted.</div>";
+            }
 
             // select all data
             $query = "SELECT id, username, date FROM order_summary ORDER BY id DESC";
@@ -116,7 +122,7 @@ include 'check.php'
                     echo "<a href='order_list_edit.php?id={$id}' class='btn btn-primary m-r-1em'>Edit</a>";
 
                     // we will use this links on next part of this post
-                    echo "<a href='#' onclick='delete_product({$id});'  class='btn btn-danger'>Delete</a>";
+                    echo "<a href='#' onclick='delete_summary({$id});'  class='btn btn-danger'>Delete</a>";
                     echo "</td>";
                     echo "</tr>";
                 }
@@ -128,7 +134,17 @@ include 'check.php'
                 echo "<div class='alert alert-danger'>No records found.</div>";
             }
             ?>
+            <script type='text/javascript'>
+            // confirm record deletion
+            function delete_summary(id) {
 
+                if (confirm('Are you sure?')) {
+                    // if user clicked ok,
+                    // pass the id to delete.php and execute the delete query
+                    window.location = 'order_delete.php?id=' + id;
+                }
+            }
+        </script>
 
         </div> <!-- end .container -->
 
