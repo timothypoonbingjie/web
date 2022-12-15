@@ -107,7 +107,6 @@
             $date_of_birth = $row['date_of_birth'];
             $account_status = $row['account_status'];
             $image = $row['image'];
-
         }
 
         // show error
@@ -118,7 +117,7 @@
 
         <!-- HTML form to update record will be here -->
 
-        
+
         <!-- PHP post to update record will be here -->
         <?php
         // check if form was submitted
@@ -211,7 +210,7 @@
                     $target_directory = "uploads/";
                     $target_file = $target_directory . $image;
                     $file_type = pathinfo($target_file, PATHINFO_EXTENSION);
-    
+
 
                     $check = getimagesize($_FILES["image"]["tmp_name"]);
                     if ($check === false) {
@@ -234,7 +233,7 @@
                     if (!is_dir($target_directory)) {
                         mkdir($target_directory, 0777, true);
                     }
-              
+
                     if (empty($error_message)) {
                         // it means there are no errors, so try to upload the file
                         if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
@@ -245,14 +244,14 @@
                 }
                 if (isset($_POST['delete'])) {
                     $image = htmlspecialchars(strip_tags($image));
-    
+
                     $image = !empty($_FILES["image"]["name"])
                         ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"])
                         : "";
                     $target_directory = "uploads/";
                     $target_file = $target_directory . $image;
                     $file_type = pathinfo($target_file, PATHINFO_EXTENSION);
-    
+
                     unlink("uploads/" . $row['image']);
                     $_POST['image'] = null;
                     $query = "UPDATE products
@@ -266,7 +265,7 @@
                 }
                 if ($pass == true) {
                     $query = "UPDATE customers
-                  SET user=:user, passwords=:new_pass, first_name=:first_name, last_name=:last_name, gender=:gender, date_of_birth=:date_of_birth, account_status=:account_status, image=:image WHERE id = :id";
+                  SET user=:user, passwords=:new_pass, first_name=:first_name, last_name=:last_name, gender=:gender, date_of_birth=:date_of_birth, account_status=:account_status, image=:imageS WHERE id = :id";
                     // prepare query for excecution
                     $stmt = $con->prepare($query);
                     // posted values
@@ -307,7 +306,7 @@
         } ?>
 
         <!--we have our html form here where new record information can be updated-->
-<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id={$id}"); ?>" method="post" enctype="multipart/form-data">
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id={$id}"); ?>" method="post" enctype="multipart/form-data">
             <table class='table table-hover table-responsive table-bordered'>
                 <tr>
                     <td>Username</td>
