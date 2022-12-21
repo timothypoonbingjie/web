@@ -211,6 +211,7 @@ include 'check.php'
                             <input type="button" value="Delete" class="delete_one" />
                         </td>
                         <td colspan="2" class="text-end">
+                        <a href='order_summary.php' class='btn btn-primary'>Go to order list</a>
                             <input type='submit' value='Save' class='btn btn-primary' />
                         </td>
                     </tr>
