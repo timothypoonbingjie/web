@@ -376,7 +376,7 @@
                     <td>
                         <input type='submit' value='Save Changes' class='btn btn-primary' />
                         <a href='customers_read.php' class='btn btn-danger'>Back to read customers</a>
-                        <?php echo "<a href='customers_delete.php?id={$id}' onclick=delete_customers([$id});' class='btn btn-danger'>Delete</a>"; ?>
+                        <?php echo "<a href='customers_delete.php?id={$id}' onclick=delete_customers([$id});' class='btn btn-danger'>Delete Customer</a>"; ?>
                     </td>
                 </tr>
             </table>

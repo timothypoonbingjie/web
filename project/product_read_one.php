@@ -136,6 +136,7 @@ include 'check.php'
                         <a href='product_read.php' class='btn btn-danger'>Back to read products</a>
                     
                         <?php echo "<a href='product_edit.php?id={$id}' class='btn btn-primary m-r-1em mx-2'>Go to product Edit</a>"; ?>
+                        <?php echo "<a href='product_delete.php?id={$id}' onclick=delete_customers([$id});' class='btn btn-danger'>Delete Product</a>"; ?>
                     </td>
                 </tr>
             </table>
@@ -143,6 +144,17 @@ include 'check.php'
 
         </div> <!-- end .container -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous">
+        </script>
+        <script type='text/javascript'>
+            // confirm record deletion
+            function delete_customers(id) {
+
+                if (confirm('Are you sure?')) {
+                    // if user clicked ok,
+                    // pass the id to delete.php and execute the delete query
+                    window.location = 'customers_delete.php?id=' + id;
+                }
+            }
         </script>
     </div>
 </body>

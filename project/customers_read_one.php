@@ -160,7 +160,7 @@ include 'check.php'
                     <td></td>
                     <td>
                         <a href='customers_read.php' class='btn btn-danger'>Back to read Customers</a>
-                        <?php echo "<a href='customers_delete.php?id={$id}' onclick=delete_customers([$id});' class='btn btn-danger'>Delete</a>"; ?>
+                        <?php echo "<a href='customers_delete.php?id={$id}' onclick=delete_customers([$id});' class='btn btn-danger'>Delete Customer</a>"; ?>
                     </td>
                 </tr>
             </table>
