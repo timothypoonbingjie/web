@@ -376,6 +376,7 @@
                     <td>
                         <input type='submit' value='Save Changes' class='btn btn-primary' />
                         <a href='customers_read.php' class='btn btn-danger'>Back to read customers</a>
+                        <?php echo "<a href='customers_delete.php?id={$id}' onclick=delete_customers([$id});' class='btn btn-danger'>Delete</a>"; ?>
                     </td>
                 </tr>
             </table>
@@ -383,6 +384,17 @@
 
     </div>
     <!-- end .container -->
+    <script type='text/javascript'>
+            // confirm record deletion
+            function delete_customers(id) {
+
+                if (confirm('Are you sure?')) {
+                    // if user clicked ok,
+                    // pass the id to delete.php and execute the delete query
+                    window.location = 'customers_delete.php?id=' + id;
+                }
+            }
+        </script>
 </body>
 
 </html>

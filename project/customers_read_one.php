@@ -81,6 +81,7 @@ include 'check.php'
 
             $id = isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
 
+
             //include database connection
             include 'config/database.php';
 
@@ -159,13 +160,24 @@ include 'check.php'
                     <td></td>
                     <td>
                         <a href='customers_read.php' class='btn btn-danger'>Back to read Customers</a>
+                        <?php echo "<a href='customers_delete.php?id={$id}' onclick=delete_customers([$id});' class='btn btn-danger'>Delete</a>"; ?>
                     </td>
                 </tr>
             </table>
 
 
         </div> <!-- end .container -->
+        <script type='text/javascript'>
+            // confirm record deletion
+            function delete_customers(id) {
 
+                if (confirm('Are you sure?')) {
+                    // if user clicked ok,
+                    // pass the id to delete.php and execute the delete query
+                    window.location = 'customers_delete.php?id=' + id;
+                }
+            }
+        </script>
     </div>
 </body>
 

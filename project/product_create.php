@@ -163,7 +163,7 @@ include 'check.php'
                     }
                 }
                 if($image == null){
-                    $image = "nonprofile.jpg";
+                    $image = "emptybox.png";
                 }
                 if (!empty($error_message)) {
                     echo "<div class='alert alert-danger'>{$error_message}</div>";
