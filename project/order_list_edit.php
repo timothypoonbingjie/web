@@ -82,118 +82,106 @@
             <h1>Edit Order List</h1>
         </div>
         <!-- PHP read record by ID will be here -->
-        <?php
-        // get passed parameter value, in this case, the record ID
-        // isset() is a PHP function used to verify if a value is there or not
-        $id = isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
 
-        //include database connection
-        include 'config/database.php';
-
-        // read current record's data
-        try {
-            // prepare select query
-            $query = "SELECT * FROM order_summary INNER JOIN order_detials ON order_detials.order_id = order_summary.id INNER JOIN products ON products.id = order_detials.product_id WHERE order_summary.id = ?";
-            $stmt = $con->prepare($query);
-
-            // this is the first question mark
-            $stmt->bindParam(1, $order_id);
-
-            // execute our query
-            $stmt->execute();
-
-            // store retrieved row to a variable
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            // values to fill up our form
-
-        }
-
-        // show error
-        catch (PDOException $exception) {
-            die('ERROR: ' . $exception->getMessage());
-        }
-        ?>
 
         <?php
         // get passed parameter value, in this case, the record ID
         // isset() is a PHP function used to verify if a value is there or not
-        $id = isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
+        
 
         //include database connection
         include 'config/database.php';
+        $error_message = "";
+            $id = isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
 
-        // read current record's data
-        try {
-            // prepare select query
-            $query = "SELECT * FROM order_summary INNER JOIN order_detials ON order_detials.order_id = order_summary.id WHERE order_summary.id = ?";
-            $stmt = $con->prepare($query);
-
-            // this is the first question mark
-            $stmt->bindParam(1, $id);
-
-            // execute our query
-            $stmt->execute();
-
-            // store retrieved row to a variable
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            // values to fill up our form
-            $id = $row['id'];
-            $date = $row['date'];
-            $username = $row['username'];
-            $quantity = $row['quantity'];
-            $product_id = $row['product_id'];
-        }
-
-        // show error
-        catch (PDOException $exception) {
-            die('ERROR: ' . $exception->getMessage());
-        }
-        ?>
-
-        <?php
         // check if form was submitted
         if ($_POST) {
 
-            $order_id = $_POST['order_id'];
-            $order_date = $_POST['order_date'];
             $username = $_POST['username'];
-            $quantity = $_POST['quantity'];
             $product_id = $_POST['product_id'];
-            $error_message = "";
+            $quantity = $_POST['quantity'];
 
-            try {
-                // write update query
-                // in this case, it seemed like we have so many fields to pass and
-                // it is better to label them and not use question marks
-                $query = "UPDATE order_summary SET id=:id, date=:date, username=:username WHERE id = :id
-                    INNER JOIN order_detials ON order_detials.order_id = order_summary.id SET id=:id, product_id=:product_id, quantity=:quantity WHERE id = :id WHERE id = :id";
-                // prepare query for excecution
-                $stmt = $con->prepare($query);
-                // posted values
-                $id = htmlspecialchars(strip_tags($_POST['id']));
-                $date = htmlspecialchars(strip_tags($_POST['date']));
-                $username = htmlspecialchars(strip_tags($_POST['username']));
-                $quantity = htmlspecialchars(strip_tags($_POST['quantity']));
-                $product_id = htmlspecialchars(strip_tags($_POST['product_id']));
-                // bind the parameters
-                $stmt->bindParam(':id', $id);
-                $stmt->bindParam(':date', $date);
-                $stmt->bindParam(':username', $username);
-                $stmt->bindParam(':quantity', $quantity);
-                $stmt->bindParam(':product_id', $product_id);
-                // Execute the query
-                if ($stmt->execute()) {
-                    header("Location: order_summary.php?update={$order_id}");
-                } else {
-                    echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
+            if ($username == "") {
+                $error_message .= "<div class='alert alert-danger'>Please select your username!</div>";
+            }
+
+            if ($product_id == [""]) {
+                $error_message .= "<div class='alert alert-danger'>Please select your product!</div>";
+            }
+
+            if ($quantity == [""]) {
+                $error_message .= "<div class='alert alert-danger'>Please enter how many product you want!</div>";
+            }
+
+            if (!empty($error_message)) {
+                echo "<div class='alert alert-danger'>{$error_message}</div>";
+            } else {
+
+                try {
+                    // insert query
+                    $query = "UPDATE order_summary SET username=:username, date=:date WHERE id=:id";
+                    // prepare query for execution
+                    $stmt = $con->prepare($query);
+                    // bind the parameters
+                    $stmt->bindParam(':username', $username);
+                    $date = date('Y-m-d H:i:s'); // get the current date and time
+                    $stmt->bindParam(':date', $date);
+                    $stmt->bindParam(':id', $id);
+
+                    // Execute the query
+                    if ($stmt->execute()) {
+                        echo "<div class='alert alert-success'>Your order is updated.</div>";
+                        $query_delete = "DELETE FROM order_detials WHERE order_id=:order_id";
+                        $stmt_delete = $con->prepare($query_delete);
+                        $stmt_delete->bindParam(':order_id', $id);
+                        if ($stmt_delete->execute()) {
+                            
+                            for ($count = 0; $count < count($product_id); $count++) {
+                                try {
+                                    // insert query
+                                    $query_insert = "INSERT INTO order_detials SET order_id=:order_id, product_id=:product_id, quantity=:quantity";
+                                    // prepare query for execution
+                                    $stmt_insert = $con->prepare($query_insert);
+                                    // bind the parameters
+                                    $stmt_insert->bindParam(':order_id', $id);
+                                    $stmt_insert->bindParam(':product_id', $product_id[$count]);
+                                    $stmt_insert->bindParam(':quantity', $quantity[$count]);
+                                    //echo $product_id[$count];
+                                    // Execute the query
+                                    $record_number = $count + 1;
+                                    if ($stmt_insert->execute()) {
+                                        
+                                    } else {
+                                        echo "<div class='alert alert-danger'>Unable to save record.</div>";
+                                    }
+                                }
+                                // show errorproduct_id
+                                catch (PDOException $exception) {
+                                    die('ERROR: ' . $exception->getMessage());
+                                }
+                            }
+                           
+                        }
+                    } else {
+                        echo "<div class='alert alert-danger'>Unable to save record.</div>";
+                    }
+                }
+                // show error
+                catch (PDOException $exception) {
+                    die('ERROR: ' . $exception->getMessage());
                 }
             }
-            // show errors
-            catch (PDOException $exception) {
-                die('ERROR: ' . $exception->getMessage());
-            }
+        }
+        try {
+            // prepare select query
+            $query = "SELECT * FROM order_summary WHERE order_summary.id =:id";
+            $stmt = $con->prepare($query);
+            $stmt->bindParam(":id", $id);
+            $stmt->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            extract($row);
+        } catch (PDOException $exception) {
+            die('ERROR: ' . $exception->getMessage());
         }
 
         ?>
@@ -202,7 +190,7 @@
 
         <!--we have our html form here where new record information can be updated-->
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id={$id}"); ?>" method="post">
-            <table class='table table-hover table-responsive table-bordered'>
+            <table id="delete_row" class='table table-hover table-responsive table-bordered'>
 
                 <tr>
                     <td>Username</td>
@@ -238,10 +226,10 @@
                 if ($count > 0) {
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         extract($row);
-                        echo "<tr>
+                        echo "<tr class='pRow'>  
                             <td class='col-3'>Product Name</td>
                             <td class='col-3'><select class=\"form-select form-select\" aria-label=\".form-select example\" name=\"product_id[]\">
-                            <option value=\"$name\">$name</option>";
+                            <option value=\"$id\">$name</option>";
                         $query = "SELECT id, name, price FROM products ORDER BY id DESC";
                         $stmt2 = $con->prepare($query);
                         $stmt2->execute();
@@ -255,8 +243,8 @@
                         echo "
                             
                             <td class='col-3'>Quantity</td>
-                            <td class='col-3'><input type='number' name='quantity' value='$quantity' class='form-control' />
-                            </td>
+                            <td class='col-3'><input type='number' name='quantity[]' value='$quantity' class='form-control' /></td>
+                            <td><input type=\"button\" value=\"Delete\" onclick=\"deleteRow(this)\"></td>
                             </tr>";
                     }
                 }
@@ -264,7 +252,7 @@
                 <tr>
                     <td></td>
                     <td>
-                        <input type='submit' value='Save Changes' class='btn btn-primary' />
+                    <input type='submit' value='Save Changes' class='btn btn-primary' onclick="checkDuplicate(event)" />
                         <a href='product_read.php' class='btn btn-danger'>Back to read products</a>
                     </td>
                 </tr>
@@ -275,7 +263,39 @@
 
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <script>
+        function checkDuplicate(event) {
+            var newarray = [];
+            var selects = document.getElementsByTagName('select');
+            for (var i = 0; i < selects.length; i++) {
+                newarray.push(selects[i].value);
+            }
+            if (newarray.length !== new Set(newarray).size) {
+                alert("There are duplicate item in the array");
+                event.preventDefault();
+            } 
+        }
+    </script>
 
+    <script>
+        document.addEventListener('click', function(event) {
+            if (event.target.matches('.add_one')) {
+                var element = document.querySelector('.pRow');
+                var clone = element.cloneNode(true);
+                element.after(clone);
+            }
+        }, false);
+    </script>
+
+<script>
+        function deleteRow(r) {
+            var total = document.querySelectorAll('.pRow').length;
+            if (total > 1) {
+                var i = r.parentNode.parentNode.rowIndex;
+                document.getElementById("delete_row").deleteRow(i);
+            }
+        }
+    </script>
 
     <!-- end .container -->
 </body>
