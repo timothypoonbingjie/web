@@ -87,12 +87,12 @@
         <?php
         // get passed parameter value, in this case, the record ID
         // isset() is a PHP function used to verify if a value is there or not
-        
+
 
         //include database connection
         include 'config/database.php';
         $error_message = "";
-            $id = isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
+        $id = isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
 
         // check if form was submitted
         if ($_POST) {
@@ -135,7 +135,7 @@
                         $stmt_delete = $con->prepare($query_delete);
                         $stmt_delete->bindParam(':order_id', $id);
                         if ($stmt_delete->execute()) {
-                            
+
                             for ($count = 0; $count < count($product_id); $count++) {
                                 try {
                                     // insert query
@@ -150,7 +150,6 @@
                                     // Execute the query
                                     $record_number = $count + 1;
                                     if ($stmt_insert->execute()) {
-                                        
                                     } else {
                                         echo "<div class='alert alert-danger'>Unable to save record.</div>";
                                     }
@@ -160,7 +159,6 @@
                                     die('ERROR: ' . $exception->getMessage());
                                 }
                             }
-                           
                         }
                     } else {
                         echo "<div class='alert alert-danger'>Unable to save record.</div>";
@@ -244,7 +242,7 @@
                             
                             <td class='col-3'>Quantity</td>
                             <td class='col-3'><input type='number' name='quantity[]' value='$quantity' class='form-control' /></td>
-                            <td><input type=\"button\" value=\"Delete\" onclick=\"deleteRow(this)\"></td>
+                            <td><input type=\"button\" value=\"Delete\" class='btn btn-danger' onclick=\"deleteRow(this)\"></td>
                             </tr>";
                     }
                 }
@@ -252,8 +250,11 @@
                 <tr>
                     <td></td>
                     <td>
-                    <input type='submit' value='Save Changes' class='btn btn-primary' onclick="checkDuplicate(event)" />
-                        <a href='product_read.php' class='btn btn-danger'>Back to read products</a>
+                        <a href='product_read.php' class='btn btn-primary'>Back to read products</a>
+                    </td>
+                    <td></td>
+                    <td>
+                        <input type='submit' value='Save Changes' class='btn btn-success' onclick="checkDuplicate(event)" />
                     </td>
                 </tr>
 
@@ -273,7 +274,7 @@
             if (newarray.length !== new Set(newarray).size) {
                 alert("There are duplicate item in the array");
                 event.preventDefault();
-            } 
+            }
         }
     </script>
 
@@ -287,7 +288,7 @@
         }, false);
     </script>
 
-<script>
+    <script>
         function deleteRow(r) {
             var total = document.querySelectorAll('.pRow').length;
             if (total > 1) {

@@ -5,7 +5,7 @@ include 'check.php'
 <html>
 
 <head>
-<title>PDO - Read Records - PHP CRUD Tutorial</title>
+    <title>PDO - Read Records - PHP CRUD Tutorial</title>
     <!-- Latest compiled and minified Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
@@ -15,9 +15,9 @@ include 'check.php'
 
 <body>
     <div class="container">
-        
+
         <nav class="navbar navbar-expand-lg bg-info">
-       
+
             <a class="navbar-brand " href="home.php">Home</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -135,7 +135,7 @@ include 'check.php'
 
             <!-- html form here where the product information will be entered -->
             <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
-                <table class='table table-hover table-responsive table-bordered'>
+                <table id="delete_row" class='table table-hover table-responsive table-bordered'>
                     <tr>
                         <td>Customer username</td>
                         <td colspan="3">
@@ -200,6 +200,7 @@ include 'check.php'
                         </td>
                         <td>Quantity</td>
                         <td><input type='number' name='quantity[]' class='form-control' /></td>
+                        <td><input type=\"button\" value=\"Delete\" class='btn btn-danger' onclick=\"deleteRow(this)\"></td>
                     </tr>";
 
 
@@ -208,11 +209,11 @@ include 'check.php'
                     <tr>
                         <td colspan="2">
                             <input type="button" value="Add More Product" class="add_one" />
-                            <input type="button" value="Delete" class="delete_one" />
+
                         </td>
                         <td colspan="2" class="text-end">
-                        <a href='order_summary.php' class='btn btn-primary'>Go to order list</a>
-                            <input type='submit' value='Save' class='btn btn-primary' />
+                            <a href='order_summary.php' class='btn btn-primary'>Go to order list</a>
+                            <input type='submit' value='Save Changes' class='btn btn-success' onclick="checkDuplicate(event)" />
                         </td>
                     </tr>
                 </table>
@@ -220,6 +221,21 @@ include 'check.php'
 
 
         </div>
+
+        <script>
+            function checkDuplicate(event) {
+                var newarray = [];
+                var selects = document.getElementsByTagName('select');
+                for (var i = 0; i < selects.length; i++) {
+                    newarray.push(selects[i].value);
+                }
+                if (newarray.length !== new Set(newarray).size) {
+                    alert("There are duplicate item in the array");
+                    event.preventDefault();
+                }
+            }
+        </script>
+
         <script>
             document.addEventListener('click', function(event) {
                 if (event.target.matches('.add_one')) {
@@ -227,14 +243,17 @@ include 'check.php'
                     var clone = element.cloneNode(true);
                     element.after(clone);
                 }
-                if (event.target.matches('.delete_one')) {
-                    var total = document.querySelectorAll('.pRow').length;
-                    if (total > 1) {
-                        var element = document.querySelector('.pRow');
-                        element.remove(element);
-                    }
-                }
             }, false);
+        </script>
+
+        <script>
+            function deleteRow(r) {
+                var total = document.querySelectorAll('.pRow').length;
+                if (total > 1) {
+                    var i = r.parentNode.parentNode.rowIndex;
+                    document.getElementById("delete_row").deleteRow(i);
+                }
+            }
         </script>
         <!-- end .container -->
 </body>
