@@ -68,6 +68,7 @@
             <!-- html form to create product will be here -->
             <!-- PHP insert code will be here -->
             <?php
+            $user = $first_name = $last_name = $date_of_birth = "";
             if ($_POST) {
                 $user = $_POST['user'];
                 $passwords = $_POST['passwords'];
@@ -79,8 +80,7 @@
                 $account_status = $_POST['account_status'];
                 $image = !empty($_FILES["image"]["name"])
                     ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"])
-                    : htmlspecialchars($image, ENT_QUOTES);
-                $image = htmlspecialchars(strip_tags($image));
+                    : "";     
                 $error_message = "";
 
                 // include database connection
@@ -158,7 +158,7 @@
                     echo "Please do not empty account status";
                     $flag = 1;
                 }
-                if ($_FILES["image"]["name"]) {
+                if ($image) {
 
                     $target_directory = "uploads/";
                     $target_file = $target_directory . $image;
@@ -195,27 +195,10 @@
                         }
                     }
                 }
-                if (isset($_POST['delete'])) {
-                    $image = htmlspecialchars(strip_tags($image));
-
-                    $image = !empty($_FILES["image"]["name"])
-                        ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"])
-                        : "";
-                    $target_directory = "uploads/";
-                    $target_file = $target_directory . $image;
-                    $file_type = pathinfo($target_file, PATHINFO_EXTENSION);
-
-                    unlink("uploads/" . $row['image']);
-                    $_POST['image'] = null;
-                    $query = "UPDATE products
-                                SET image=:image WHERE id = :id";
-                    // prepare query for excecution
-                    $stmt = $con->prepare($query);
-                    $stmt->bindParam(':image', $image);
-                    $stmt->bindParam(':id', $id);
-                    // Execute the query
-                    $stmt->execute();
+                if($image == null){
+                    $image = "nonprofile.jpg";
                 }
+                
                 if ($flag == 0) {
 
 
@@ -255,11 +238,11 @@
 
             <!-- html form here where the product information will be entered -->
 
-            <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
+            <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST" enctype="multipart/form-data">
                 <table class='table table-hover table-responsive table-bordered'>
                     <tr>
                         <td>Username</td>
-                        <td><input type='text' name='user' class='form-control' /></td>
+                        <td><input type='text' name='user' value='<?php echo $user ?>'class='form-control' /></td>
                     </tr>
                     <tr>
                         <td>Password</td>
@@ -271,11 +254,11 @@
                     </tr>
                     <tr>
                         <td>First name</td>
-                        <td><input type='text' name='first_name' class='form-control' /></td>
+                        <td><input type='text' name='first_name' value='<?php echo $first_name ?>' class='form-control' /></td>
                     </tr>
                     <tr>
                         <td>Last name</td>
-                        <td><input type='text' name='last_name' class='form-control' /></td>
+                        <td><input type='text' name='last_name' value='<?php echo $last_name ?>' class='form-control' /></td>
                     </tr>
                     <tr>
                         <td>Images</td>
@@ -303,7 +286,7 @@
                     </tr>
                     <tr>
                         <td>Date of birth</td>
-                        <td><input type='date' name='date_of_birth' class='form-control' /></td>
+                        <td><input type='date' name='date_of_birth' value='<?php echo $date_of_birth ?>' class='form-control' /></td>
                     </tr>
                     <tr>
                         <td>Account status</td>

@@ -8,7 +8,7 @@ include 'check.php'
     <title>PDO - Read Records - PHP CRUD Tutorial</title>
     <!-- Latest compiled and minified Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 
     <script>
         $(function() {
@@ -47,7 +47,7 @@ include 'check.php'
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="create_new_order.php">create order</a></li>
                             <li><a class="dropdown-item" href="order_summary.php">order list</a></li>
-                            
+
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -78,6 +78,7 @@ include 'check.php'
             <!-- PHP insert code will be here -->
             <?php
 
+            $name = $description = $price = $promotion_price = $manufacture_date = $expired_date = "";
             if ($_POST) {
                 $name = $_POST['name'];
                 $description = $_POST['description'];
@@ -103,8 +104,7 @@ include 'check.php'
 
                 if ($promotion_price == "") {
                     $promotion_price = NULL;
-                 
-                } 
+                }
 
                 if ($promotion_price > $price) {
                     $error_message .= "<div class='alert alert-danger'>Please make sure promotion price is not more than normal price";
@@ -112,7 +112,7 @@ include 'check.php'
 
                 if ($expired_date == "") {
                     $expired_date = NULL;
-                }else {
+                } else {
                     $date1 = date_create($manufacture_date);
                     $date2 = date_create($expired_date);
                     $diff = date_diff($date1, $date2);
@@ -162,6 +162,9 @@ include 'check.php'
                         }
                     }
                 }
+                if($image == null){
+                    $image = "nonprofile.jpg";
+                }
                 if (!empty($error_message)) {
                     echo "<div class='alert alert-danger'>{$error_message}</div>";
                 } else {
@@ -208,19 +211,19 @@ include 'check.php'
                 <table class='table table-hover table-responsive table-bordered'>
                     <tr>
                         <td>Name</td>
-                        <td><input type='text' name='name' class='form-control' /></td>
+                        <td><input type='text' name='name' value='<?php echo $name ?>' class='form-control' /></td>
                     </tr>
                     <tr>
                         <td>Description</td>
-                        <td><textarea type='text' name='description' class='form-control'></textarea></td>
+                        <td><textarea type='text' name='description' value='<?php echo $description ?>' class='form-control'></textarea></td>
                     </tr>
                     <tr>
                         <td>Price</td>
-                        <td><input type='text' name='price' class='form-control' /></td>
+                        <td><input type='text' name='price' value='<?php echo $price ?>' class='form-control' /></td>
                     </tr>
                     <tr>
                         <td>Promotion_Price</td>
-                        <td><input type='text' name='promotion_price' class='form-control' /></td>
+                        <td><input type='text' name='promotion_price' value='<?php echo $promotion_price ?>' class='form-control' /></td>
                     </tr>
                     <tr>
                         <td>Manufacture Date</td>
