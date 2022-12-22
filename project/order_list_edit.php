@@ -5,7 +5,7 @@
     <title>PDO - Read Records - PHP CRUD Tutorial</title>
     <!-- Latest compiled and minified Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 
 
 
@@ -36,7 +36,7 @@
 
         <nav class="navbar navbar-expand-lg bg-info">
 
-            <a class="navbar-brand " href="home.php">Home</a>
+            <a class="navbar-brand " href="index.php">Home</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -72,6 +72,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="contact_us.php">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="log_out.php">Log Out</a>
                     </li>
                 </ul>
 
@@ -248,7 +251,8 @@
                 }
                 ?>
                 <tr>
-                    <td></td>
+                    
+                    <td><a href='order_summary.php' class='btn btn-primary'>Back to Order Summary</a></td>
                     <td>
                         <a href='product_read.php' class='btn btn-primary'>Back to read products</a>
                     </td>
@@ -276,9 +280,7 @@
                 event.preventDefault();
             }
         }
-    </script>
 
-    <script>
         document.addEventListener('click', function(event) {
             if (event.target.matches('.add_one')) {
                 var element = document.querySelector('.pRow');
@@ -286,9 +288,7 @@
                 element.after(clone);
             }
         }, false);
-    </script>
 
-    <script>
         function deleteRow(r) {
             var total = document.querySelectorAll('.pRow').length;
             if (total > 1) {

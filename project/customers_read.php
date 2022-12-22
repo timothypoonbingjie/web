@@ -18,7 +18,7 @@ include 'check.php'
 
         <nav class="navbar navbar-expand-lg bg-info">
 
-            <a class="navbar-brand " href="home.php">Home</a>
+            <a class="navbar-brand " href="index.php">Home</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -54,6 +54,9 @@ include 'check.php'
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="contact_us.php">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="log_out.php">Log Out</a>
                     </li>
                 </ul>
 
@@ -99,14 +102,14 @@ include 'check.php'
                 //creating our table heading
                 echo "<tr>";
                 echo "<th>ID</th>";
-                echo "<th>user</th>";
-                echo "<th>first_name</th>";
-                echo "<th>last_name</th>";
+                echo "<th>username</th>";
+                echo "<th>first name</th>";
+                echo "<th>last name</th>";
                 echo "<th>gender</th>";
-                echo "<th>date_of_birth</th>";
-                echo "<th>register_date</th>";
+                echo "<th>date of birth</th>";
+                echo "<th>register date</th>";
                 echo "<th>Image</th>";
-                echo "<th>account_status</th>";
+                echo "<th>account status</th>";
                 echo "</tr>";
 
                 // table body will be here

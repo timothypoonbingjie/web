@@ -40,11 +40,11 @@ session_start();
                 } elseif ($row['account_status'] != "opened") {
                     echo "<div class='alert alert-danger'>Your account is closed.</div>";
                 } else {
-                    header("Location: home.php");
+                    header("Location: index.php");
                     $_SESSION["Pass"] = "Pass";
                 }
             } else {
-                echo "<div class='alert alert-danger'>Wrong user name.</div>";
+                echo "<div class='alert alert-danger'>Please enter your username and password.</div>";
             }
         };
 
@@ -68,13 +68,11 @@ session_start();
                     </div>
 
                     <div class="checkbox mb-3">
-                        <label>
-                            <input type="checkbox" value="remember-me"> Remember me
-                        </label>
+                        
                     </div>
                     <button class="w-50 btn btn-lg btn-primary" type="submit">Login</button>
                 </table>
-                <a href="create_customers.php">Register now</a>
+                
             </form>
         </div>
 

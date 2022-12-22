@@ -18,7 +18,7 @@ include 'check.php'
         
         <nav class="navbar navbar-expand-lg bg-info">
        
-            <a class="navbar-brand " href="home.php">Home</a>
+            <a class="navbar-brand " href="index.php">Home</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -55,6 +55,9 @@ include 'check.php'
                     <li class="nav-item">
                         <a class="nav-link" href="contact_us.php">Contact Us</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="log_out.php">Log Out</a>
+                    </li>
                 </ul>
 
             </div>
@@ -63,7 +66,7 @@ include 'check.php'
         <!-- container -->
         <div class="container">
             <div class="page-header text-center">
-                <h1>Order List</h1>
+                <h1>Order Summary</h1>
             </div>
 
             <!-- PHP code to read records will be here -->
@@ -80,7 +83,7 @@ include 'check.php'
             }
 
             // select all data
-            $query = "SELECT id, username, date FROM order_summary ORDER BY id DESC";
+            $query = "SELECT * , sum(price*quantity) AS total_price FROM order_detials INNER JOIN order_summary ON order_summary.id = order_detials.order_id INNER JOIN products ON products.id = order_detials.product_id INNER JOIN customers ON customers.user = order_summary.customer_order GROUP BY order_summary.id DESC";
             $stmt = $con->prepare($query);
             $stmt->execute();
 
@@ -88,7 +91,7 @@ include 'check.php'
             $num = $stmt->rowCount();
 
             // link to create record form
-            echo "<a href='create_new_order.php' class='btn btn-primary m-b-1em'>Create New Customers</a>";
+            echo "<a href='create_new_order.php' class='btn btn-primary m-b-1em'>Create New Order</a>";
 
             //check if more than 0 record found
             if ($num > 0) {

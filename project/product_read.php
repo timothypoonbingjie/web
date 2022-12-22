@@ -16,7 +16,7 @@ include 'check.php'
 
         <nav class="navbar navbar-expand-lg bg-info">
 
-            <a class="navbar-brand " href="home.php">Home</a>
+            <a class="navbar-brand " href="index.php">Home</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -52,6 +52,9 @@ include 'check.php'
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="contact_us.php">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="log_out.php">Log Out</a>
                     </li>
                 </ul>
 
@@ -118,7 +121,7 @@ include 'check.php'
                     $price = number_format((float)$price, 2, '.', '');
                     echo "<td>{$price}</td>";
                     echo "<td><img src= 'uploads/$image' class='w-25'></td>";
-                    echo "<td>";
+                    echo "<td class='col-3'>";
                     // read one record
                     echo "<a href='product_read_one.php?id={$id}' class='btn btn-info m-r-1em'>Read</a>";
 

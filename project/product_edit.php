@@ -32,7 +32,7 @@
 
         <nav class="navbar navbar-expand-lg bg-info">
 
-            <a class="navbar-brand " href="home.php">Home</a>
+            <a class="navbar-brand " href="index.php">Home</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -54,7 +54,7 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="create_new_order.php">create order</a></li>
                             <li><a class="dropdown-item" href="order_summary.php">order list</a></li>
-                            
+
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -68,6 +68,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="contact_us.php">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="log_out.php">Log Out</a>
                     </li>
                 </ul>
 
@@ -105,6 +108,8 @@
             $name = $row['name'];
             $description = $row['description'];
             $price = $row['price'];
+            $promotion_price = $row['promotion_price'];
+            $manufacture_date = $row['manufacture_date'];
             $image = $row['image'];
         }
 
@@ -120,7 +125,11 @@
         // check if form was submitted
         if ($_POST) {
 
+            $name = $_POST['name'];
+            $description = $_POST['description'];
             $price = $_POST['price'];
+            $promotion_price = $_POST['promotion_price'];
+            $manufacture_date = $_POST['manufacture_date'];
             $image = !empty($_FILES["image"]["name"])
                 ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"])
                 : htmlspecialchars($image, ENT_QUOTES);
@@ -131,9 +140,15 @@
                 $error_message .= "<div class='alert alert-danger'>Please make sure price are not empty</div>";
             } elseif (!is_numeric($price)) {
                 $error_message .= "<div class='alert alert-danger'>Please make sure price only numbers</div>";
-            }
-             elseif ($price > 1000) {
+            } elseif ($price > 1000) {
                 $error_message .= "<div class='alert alert-danger'>Please make sure price are not more than RM1000</div>";
+            }
+            if ($promotion_price == "") {
+                $promotion_price = NULL;
+            } elseif (!is_numeric($promotion_price)) {
+                $error_message .= "<div class='alert alert-danger'>Please make sure promotion price only have number</div>";
+            } elseif ($promotion_price >= $price) {
+                $error_message .= "<div class='alert alert-danger'>Please make sure promotion price is not more than normal price</div>";
             }
 
 
@@ -176,7 +191,10 @@
                         echo "<div class='alert alert-danger>Update the record to upload photo.</div>";
                     }
                 }
+            } elseif (empty($image)) {
+                $image = "emptybox.png";
             }
+
             if (isset($_POST['delete'])) {
                 $image = htmlspecialchars(strip_tags($image));
 
@@ -207,7 +225,7 @@
                     // write update query
                     // in this case, it seemed like we have so many fields to pass and
                     // it is better to label them and not use question marks
-                    $query = "UPDATE products SET name=:name, description=:description, price=:price, image=:image WHERE id = :id";
+                    $query = "UPDATE products SET name=:name, description=:description, price=:price, promotion_price=:promotion_price, manufacture_date=:manufacture_date, image=:image WHERE id = :id";
                     // prepare query for excecution
                     $stmt = $con->prepare($query);
                     // posted values
@@ -219,6 +237,8 @@
                     $stmt->bindParam(':name', $name);
                     $stmt->bindParam(':description', $description);
                     $stmt->bindParam(':price', $price);
+                    $stmt->bindParam(':promotion_price', $promotion_price);
+                    $stmt->bindParam(':manufacture_date', $manufacture_date);
                     $stmt->bindParam(':image', $image);
                     $stmt->bindParam(':id', $id);
                     // Execute the query
@@ -253,6 +273,15 @@
                     <td><input type='text' name='price' value="<?php echo htmlspecialchars($price, ENT_QUOTES);  ?>" class='form-control' /></td>
                 </tr>
                 <tr>
+                    <td>Promotion Price</td>
+                    <td><input type='text' name='promotion_price' value="<?php echo htmlspecialchars($promotion_price, ENT_QUOTES);  ?>" class='form-control' /></td>
+                </tr>
+                <tr>
+                    <td>Manufacture Date</td>
+                    <td><input type='text' name='manufacture_date' value="<?php echo htmlspecialchars($manufacture_date, ENT_QUOTES);  ?>" class='form-control' /></td>
+                </tr>
+                
+                <tr>
                     <td>Images</td>
                     <td><img src="uploads/<?php echo htmlspecialchars($image, ENT_QUOTES);  ?>" />
                         <input type="file" name="image" value="<?php echo htmlspecialchars($image, ENT_QUOTES);  ?>" />
@@ -274,16 +303,16 @@
     </div>
     <!-- end .container -->
     <script type='text/javascript'>
-            // confirm record deletion
-            function delete_customers(id) {
+        // confirm record deletion
+        function delete_customers(id) {
 
-                if (confirm('Are you sure?')) {
-                    // if user clicked ok,
-                    // pass the id to delete.php and execute the delete query
-                    window.location = 'customers_delete.php?id=' + id;
-                }
+            if (confirm('Are you sure?')) {
+                // if user clicked ok,
+                // pass the id to delete.php and execute the delete query
+                window.location = 'customers_delete.php?id=' + id;
             }
-        </script>
+        }
+    </script>
 </body>
 
 </html>

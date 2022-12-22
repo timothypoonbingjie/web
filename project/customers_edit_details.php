@@ -31,7 +31,7 @@
 
         <nav class="navbar navbar-expand-lg bg-info">
 
-            <a class="navbar-brand " href="home.php">Home</a>
+            <a class="navbar-brand " href="index.php">Home</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -67,6 +67,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="contact_us.php">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="log_out.php">Log Out</a>
                     </li>
                 </ul>
 
@@ -241,6 +244,8 @@
                             echo "<div class='alert alert-danger>Update the record to upload photo.</div>";
                         }
                     }
+                } elseif(empty($image)) {
+                    $image = "nonprofile.jpg";
                 }
                 if (isset($_POST['delete'])) {
                     $image = htmlspecialchars(strip_tags($image));
@@ -342,7 +347,7 @@
                 <tr>
                     <td>Gender</td>
                     <td>
-                        <div><input disabled type='text' name="gender" value="<?php echo htmlspecialchars($gender, ENT_QUOTES);  ?>" /></div>
+                        
                         <div class="ms-4 col-2 form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="gender" id="inlineRadio1" value="male" checked>
                             <label class="form-check-label" for="inlineRadio1">Male</label>
@@ -360,7 +365,7 @@
                 <tr>
                     <td>Account Status</td>
                     <td>
-                        <div><input disabled type='text' name="account_status" value="<?php echo htmlspecialchars($account_status, ENT_QUOTES);  ?>" /></div>
+                        
                         <div class="ms-4 col-2 form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="account_status" id="inlineRadio3" value="opened" checked>
                             <label class="form-check-label" for="inlineRadio3">Opened</label>

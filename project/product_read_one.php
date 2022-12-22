@@ -16,7 +16,7 @@ include 'check.php'
 
         <nav class="navbar navbar-expand-lg bg-info">
 
-            <a class="navbar-brand " href="home.php">Home</a>
+            <a class="navbar-brand " href="index.php">Home</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -38,7 +38,7 @@ include 'check.php'
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="create_new_order.php">create order</a></li>
                             <li><a class="dropdown-item" href="order_summary.php">order list</a></li>
-                            
+
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -52,6 +52,9 @@ include 'check.php'
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="contact_us.php">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="log_out.php">Log Out</a>
                     </li>
                 </ul>
 
@@ -99,6 +102,8 @@ include 'check.php'
                 $name = $row['name'];
                 $description = $row['description'];
                 $price = $row['price'];
+                $promotion_price = $row['promotion_price'];
+                $manufacture_date = $row['manufacture_date'];
                 $image = $row['image'];
                 // shorter way to do that is extract($row)
             }
@@ -127,6 +132,14 @@ include 'check.php'
                     <td><?php echo htmlspecialchars($price, ENT_QUOTES);  ?></td>
                 </tr>
                 <tr>
+                    <td>promotion_price</td>
+                    <td><?php echo htmlspecialchars($promotion_price, ENT_QUOTES);  ?></td>
+                </tr>
+                <tr>
+                    <td>manufacture_date</td>
+                    <td><?php echo htmlspecialchars($manufacture_date, ENT_QUOTES);  ?></td>
+                </tr>
+                <tr>
                     <td>Images</td>
                     <td><img src="uploads/<?php echo htmlspecialchars($image, ENT_QUOTES);  ?>" /></td>
                 </tr>
@@ -134,7 +147,7 @@ include 'check.php'
                     <td></td>
                     <td>
                         <a href='product_read.php' class='btn btn-danger'>Back to read products</a>
-                    
+
                         <?php echo "<a href='product_edit.php?id={$id}' class='btn btn-primary m-r-1em mx-2'>Go to product Edit</a>"; ?>
                         <?php echo "<a href='product_delete.php?id={$id}' onclick=delete_customers([$id});' class='btn btn-danger'>Delete Product</a>"; ?>
                     </td>
