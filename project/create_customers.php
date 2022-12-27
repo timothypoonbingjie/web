@@ -90,61 +90,61 @@
 
                 $flag = 0;
                 if ($user == "") {
-                    echo "Please enter your username";
+                    echo "<div class='alert alert-danger'>Please enter your username</div>";
                     $flag = 1;
                 }
                 $space = " ";
                 $world = $_POST['user'];
                 if (strpos($world, $space) !== false) {
-                    echo "Username should not space";
+                    echo "<div class='alert alert-danger'>Username should not space</div>";
                     $flag = 1;
                 } elseif (strlen($user) < 6) {
-                    echo "Username need at least 6 charecter";
+                    echo "<div class='alert alert-danger'>Username need at least 6 charecter</div>";
                     $flag = 1;
                 }
                 if ($passwords == "") {
-                    echo "Please enter your password";
+                    echo "<div class='alert alert-danger'>Please enter your password</div>";
                     $flag = 1;
                 } elseif (!preg_match('/[A-Z]/', $passwords)) {
-                    echo "Password need include uppercase";
+                    echo "<div class='alert alert-danger'>Password need include uppercase</div>";
                     $flag = 1;
                 } elseif (!preg_match('/[a-z]/', $passwords)) {
-                    echo "Password need include lowercase";
+                    echo "<div class='alert alert-danger'>Password need include lowercase</div>";
                     $flag = 1;
                 } elseif (!preg_match('/[0-9]/', $passwords)) {
-                    echo "Password need include number";
+                    echo "<div class='alert alert-danger'>Password need include number</div>";
                     $flag = 1;
                 } elseif (strlen($passwords) < 8) {
-                    echo "Password need at least 8 charecter";
+                    echo "<div class='alert alert-danger'>Password need at least 8 charecter</div>";
                     $flag = 1;
                 }
 
 
                 if ($confirm_passwords == "") {
-                    echo "Please enter your confirm password";
+                    echo "<div class='alert alert-danger'>Please enter your confirm password";
                     $flag = 1;
                 } elseif ($passwords != $confirm_passwords) {
-                    echo "Password need same with confirm password";
+                    echo "<div class='alert alert-danger'>Password need same with confirm password</div>";
                     $flag = 1;
                 }
 
                 if ($first_name == "") {
-                    echo "Please enter your first name";
+                    echo "<div class='alert alert-danger'>Please enter your first name</div>";
                     $flag = 1;
                 }
 
                 if ($last_name == "") {
-                    echo "Please enter your last name";
+                    echo "<div class='alert alert-danger'>Please enter your last name</div>";
                     $flag = 1;
                 }
 
                 if ($gender == "") {
-                    echo "Please do not empty gender";
+                    echo "<div class='alert alert-danger'>Please do not empty gender</div>";
                     $flag = 1;
                 }
 
                 if ($date_of_birth == "") {
-                    echo "Please enter your date of birth";
+                    echo "<div class='alert alert-danger'>Please enter your date of birth</div>";
                     $flag = 1;
                 }
                 $day = $_POST['date_of_birth'];
@@ -153,12 +153,12 @@
                 $date2 = date_create($today);
                 $diff = date_diff($date1, $date2);
                 if ($diff->format("%y") <= "18") {
-                    echo "User need atleast 18 years old";
+                    echo "<div class='alert alert-danger'>User need atleast 18 years old</div>";
                     $flag = 1;
                 }
 
                 if ($account_status == "") {
-                    echo "Please do not empty account status";
+                    echo "<div class='alert alert-danger'>Please do not empty account status</div>";
                     $flag = 1;
                 }
                 if ($image) {
@@ -274,13 +274,13 @@
                         <td>Gender</td>
                         <td>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" value="female" name="gender" checked>
+                                <input class="form-check-input" type="radio" value="male" name="gender" checked>
                                 <label class="form-check-label" for="flexRadioDefault1">
                                     Male
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" value="male" name="gender">
+                                <input class="form-check-input" type="radio" value="female" name="gender">
                                 <label class="form-check-label" for="flexRadioDefault2">
                                     Female
                                 </label>

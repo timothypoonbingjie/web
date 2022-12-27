@@ -150,8 +150,9 @@
             } elseif ($promotion_price >= $price) {
                 $error_message .= "<div class='alert alert-danger'>Please make sure promotion price is not more than normal price</div>";
             }
-
-
+            if ($manufacture_date == "") {
+                $error_message .= "<div class='alert alert-danger'>Please make sure manufacture_date are not empty</div>";
+            } 
             // now, if image is not empty, try to upload the image
             if ($_FILES["image"]["name"]) {
 
@@ -278,7 +279,7 @@
                 </tr>
                 <tr>
                     <td>Manufacture Date</td>
-                    <td><input type='text' name='manufacture_date' value="<?php echo htmlspecialchars($manufacture_date, ENT_QUOTES);  ?>" class='form-control' /></td>
+                    <td><input type='date' name='manufacture_date' value="<?php echo htmlspecialchars($manufacture_date, ENT_QUOTES);  ?>" class='form-control' /></td>
                 </tr>
                 
                 <tr>

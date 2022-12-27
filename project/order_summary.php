@@ -83,13 +83,12 @@ include 'check.php'
             }
 
             // select all data
-            $query = "SELECT * , sum(price*quantity) AS total_price FROM order_detials INNER JOIN order_summary ON order_summary.id = order_detials.order_id INNER JOIN products ON products.id = order_detials.product_id INNER JOIN customers ON customers.user = order_summary.customer_order GROUP BY order_summary.id DESC";
+            $query = "SELECT * , sum(price*quantity) AS total_price FROM order_detials INNER JOIN order_summary ON order_summary.id = order_detials.order_id INNER JOIN products ON products.id = order_detials.product_id INNER JOIN customers ON customers.user = order_summary.username GROUP BY order_detials.order_id DESC";
             $stmt = $con->prepare($query);
             $stmt->execute();
 
             // this is how to get number of rows returned
             $num = $stmt->rowCount();
-
             // link to create record form
             echo "<a href='create_new_order.php' class='btn btn-primary m-b-1em'>Create New Order</a>";
 
@@ -102,8 +101,11 @@ include 'check.php'
                 //creating our table heading
                 echo "<tr>";
                 echo "<th>ID</th>";
-                echo "<th>username</th>";
+                echo "<th>First Name</th>";
+                echo "<th>Last Name</th>";
                 echo "<th>date</th>";
+                echo "<th>total price</th>";
+                echo "<th>Action</th>";
                 echo "</tr>";
 
                 // table body will be here
@@ -114,15 +116,17 @@ include 'check.php'
                     extract($row);
                     // creating new table row per record
                     echo "<tr>";
-                    echo "<td>{$id}</td>";
-                    echo "<th>{$username}</th>";
+                    echo "<td>{$order_id}</td>";
+                    echo "<th>{$first_name}</th>";
+                    echo "<th>{$last_name}</th>";
                     echo "<th>{$date}</th>";
+                    echo "<th class=\"text-end\">RM{$total_price}</th>";
                     echo "<td>";
                     // read one record
-                    echo "<a href='order_list_read.php?id={$id}' class='btn btn-info m-r-1em'>Read</a>";
+                    echo "<a href='order_list_read.php?id={$order_id}' class='btn btn-info m-r-1em'>Read</a>";
 
                     // we will use this links on next part of this post
-                    echo "<a href='order_list_edit.php?id={$id}' class='btn btn-primary m-r-1em'>Edit</a>";
+                    echo "<a href='order_list_edit.php?id={$order_id}' class='btn btn-primary m-r-1em'>Edit</a>";
 
                     // we will use this links on next part of this post
                     echo "<a href='#' onclick='delete_summary({$id});'  class='btn btn-danger'>Delete</a>";

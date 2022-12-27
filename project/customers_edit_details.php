@@ -53,7 +53,7 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="create_new_order.php">create order</a></li>
                             <li><a class="dropdown-item" href="order_summary.php">order list</a></li>
-                            
+
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -124,12 +124,14 @@
         <!-- PHP post to update record will be here -->
         <?php
         // check if form was submitted
-        if ($_POST) {
+        if (isset($_POST['update'])) {
             try {
-                $user = $_POST['user'];
-                $first_name = $_POST['first_name'];
-                $last_name = $_POST['last_name'];
-                $date_of_birth = $_POST['date_of_birth'];
+                $first_name = htmlspecialchars(strip_tags($_POST['first_name']));
+                $last_name = htmlspecialchars(strip_tags($_POST['last_name']));
+                $gender = htmlspecialchars(strip_tags($_POST['gender']));
+                $date_of_birth = htmlspecialchars(strip_tags($_POST['date_of_birth']));
+                $account_status = htmlspecialchars(strip_tags($_POST['account_status']));
+                $user = htmlspecialchars(strip_tags($_POST['user']));
                 $image = !empty($_FILES["image"]["name"])
                     ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"])
                     : htmlspecialchars($image, ENT_QUOTES);
@@ -210,33 +212,35 @@
                 // it is better to label them and not use question marks
                 if ($_FILES["image"]["name"]) {
 
+                    // upload to file to folder
                     $target_directory = "uploads/";
                     $target_file = $target_directory . $image;
                     $file_type = pathinfo($target_file, PATHINFO_EXTENSION);
 
-
+                    // make sure that file is a real image
                     $check = getimagesize($_FILES["image"]["tmp_name"]);
                     if ($check === false) {
                         $error_message .= "<div class='alert alert-danger'>Submitted file is not an image.</div>";
                     }
-
+                    // make sure certain file types are allowed
                     $allowed_file_types = array("jpg", "jpeg", "png", "gif");
                     if (!in_array($file_type, $allowed_file_types)) {
                         $error_message .= "<div class='alert alert-danger'>Only JPG, JPEG, PNG, GIF files are allowed.</div>";
                     }
-
+                    // make sure file does not exist
                     if (file_exists($target_file)) {
                         $error_message .= "<div class='alert alert-danger'>Image already exists. Try to change file name.</div>";
                     }
-
+                    // make sure submitted file is not too large, can't be larger than 1 MB
                     if ($_FILES['image']['size'] > (1024000)) {
                         $error_message .= "<div class='alert alert-danger'>Image must be less than 1 MB in size.</div>";
                     }
-
+                    // make sure the 'uploads' folder exists
+                    // if not, create it
                     if (!is_dir($target_directory)) {
                         mkdir($target_directory, 0777, true);
                     }
-
+                    // if $file_upload_error_messages is still empty
                     if (empty($error_message)) {
                         // it means there are no errors, so try to upload the file
                         if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
@@ -244,47 +248,52 @@
                             echo "<div class='alert alert-danger>Update the record to upload photo.</div>";
                         }
                     }
-                } elseif(empty($image)) {
-                    $image = "nonprofile.jpg";
-                }
-                if (isset($_POST['delete'])) {
-                    $image = htmlspecialchars(strip_tags($image));
+                    if ($pass == true || empty($error_message)) {
+                        $query = "UPDATE customers
+                      SET user=:user, passwords=:new_pass, first_name=:first_name, last_name=:last_name, gender=:gender, date_of_birth=:date_of_birth, account_status=:account_status, image=:image WHERE id = :id";
+                        // prepare query for excecution
+                        $stmt = $con->prepare($query);
+                        // posted values
+                        $user = htmlspecialchars(strip_tags($_POST['user']));
+                        if ($keeppass == true) {
+                            $new_pass = $row['passwords'];
+                        } else {
+                            $new_pass = htmlspecialchars(strip_tags($_POST['new_pass']));
+                        }
+    
+                        // bind the parameters
+                        $stmt->bindParam(':user', $user);
+                        $stmt->bindParam(':new_pass', $new_pass);
+                        $stmt->bindParam(':first_name', $first_name);
+                        $stmt->bindParam(':last_name', $last_name);
+                        $stmt->bindParam(':gender', $gender);
+                        $stmt->bindParam(':date_of_birth', $date_of_birth);
+                        $stmt->bindParam(':account_status', $account_status);
+                        $stmt->bindParam(':image', $image);
+                        $stmt->bindParam(':id', $id);
+    
+                        // Execute the query
+                        if ($stmt->execute()) {
+                            echo "<div class='alert alert-success'>Record was saved.</div>";
+                        } else {
+                            echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
+                        }
+                    }
+                } else {
 
-                    $image = !empty($_FILES["image"]["name"])
-                        ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"])
-                        : "";
-                    $target_directory = "uploads/";
-                    $target_file = $target_directory . $image;
-                    $file_type = pathinfo($target_file, PATHINFO_EXTENSION);
-
-                    unlink("uploads/" . $row['image']);
-                    $_POST['image'] = null;
-                    $query = "UPDATE products
-                                SET image=:image WHERE id = :id";
-                    // prepare query for excecution
-                    $stmt = $con->prepare($query);
-                    $stmt->bindParam(':image', $image);
-                    $stmt->bindParam(':id', $id);
-                    // Execute the query
-                    $stmt->execute();
-                }
-                if ($pass == true) {
                     $query = "UPDATE customers
-                  SET user=:user, passwords=:new_pass, first_name=:first_name, last_name=:last_name, gender=:gender, date_of_birth=:date_of_birth, account_status=:account_status, image=:image WHERE id = :id";
+                    SET user=:user, passwords=:new_pass, first_name=:first_name, last_name=:last_name, gender=:gender, date_of_birth=:date_of_birth, account_status=:account_status WHERE id = :id";
                     // prepare query for excecution
                     $stmt = $con->prepare($query);
                     // posted values
-                    $user = htmlspecialchars(strip_tags($_POST['user']));
+
                     if ($keeppass == true) {
                         $new_pass = $row['passwords'];
                     } else {
                         $new_pass = htmlspecialchars(strip_tags($_POST['new_pass']));
                     }
-                    $first_name = htmlspecialchars(strip_tags($_POST['first_name']));
-                    $last_name = htmlspecialchars(strip_tags($_POST['last_name']));
-                    $gender = htmlspecialchars(strip_tags($_POST['gender']));
-                    $date_of_birth = htmlspecialchars(strip_tags($_POST['date_of_birth']));
-                    $account_status = htmlspecialchars(strip_tags($_POST['account_status']));
+
+
                     // bind the parameters
                     $stmt->bindParam(':user', $user);
                     $stmt->bindParam(':new_pass', $new_pass);
@@ -293,7 +302,6 @@
                     $stmt->bindParam(':gender', $gender);
                     $stmt->bindParam(':date_of_birth', $date_of_birth);
                     $stmt->bindParam(':account_status', $account_status);
-                    $stmt->bindParam(':image', $image);
                     $stmt->bindParam(':id', $id);
 
                     // Execute the query
@@ -303,12 +311,47 @@
                         echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
                     }
                 }
+
             }
+
             // show errors
             catch (PDOException $exception) {
                 die('ERROR: ' . $exception->getMessage());
             }
-        } ?>
+        }
+        if (isset($_POST['delete'])) {
+
+            $image = htmlspecialchars(strip_tags($image));
+
+            $image = !empty($_FILES["image"]["name"])
+                ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"])
+                : "";
+            $target_directory = "uploads/";
+            $target_file = $target_directory . $image;
+            $file_type = pathinfo($target_file, PATHINFO_EXTENSION);
+            if ($row['image'] == "nonprofile.jpg") {
+                echo "<div class='alert alert-danger'>Photo cannot be delete</div>";
+            }
+            else {  unlink("uploads/" . $row['image']);
+
+                $_FILES["image"]["name"] = null;
+                if (($_FILES["image"]["name"]) == null
+                ) {
+                    $image = "nonprofile.jpg";
+                }
+                $query = "UPDATE customers
+                            SET image=:image WHERE id = :id";
+                // prepare query for excecution
+                $stmt = $con->prepare($query);
+                $stmt->bindParam(':image', $image);
+                $stmt->bindParam(':id', $id);
+                // Execute the query
+                $stmt->execute();
+
+            }
+            
+        }
+        ?>
 
         <!--we have our html form here where new record information can be updated-->
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id={$id}"); ?>" method="post" enctype="multipart/form-data">
@@ -347,7 +390,7 @@
                 <tr>
                     <td>Gender</td>
                     <td>
-                        
+
                         <div class="ms-4 col-2 form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="gender" id="inlineRadio1" value="male" checked>
                             <label class="form-check-label" for="inlineRadio1">Male</label>
@@ -365,7 +408,7 @@
                 <tr>
                     <td>Account Status</td>
                     <td>
-                        
+
                         <div class="ms-4 col-2 form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="account_status" id="inlineRadio3" value="opened" checked>
                             <label class="form-check-label" for="inlineRadio3">Opened</label>
@@ -379,7 +422,7 @@
                 <tr>
                     <td></td>
                     <td>
-                        <input type='submit' value='Save Changes' class='btn btn-primary' />
+                        <input type='submit' name='update' value='Save Changes' class='btn btn-primary' />
                         <a href='customers_read.php' class='btn btn-danger'>Back to read customers</a>
                         <?php echo "<a href='customers_delete.php?id={$id}' onclick=delete_customers([$id});' class='btn btn-danger'>Delete Customer</a>"; ?>
                     </td>
@@ -390,16 +433,16 @@
     </div>
     <!-- end .container -->
     <script type='text/javascript'>
-            // confirm record deletion
-            function delete_customers(id) {
+        // confirm record deletion
+        function delete_customers(id) {
 
-                if (confirm('Are you sure?')) {
-                    // if user clicked ok,
-                    // pass the id to delete.php and execute the delete query
-                    window.location = 'customers_delete.php?id=' + id;
-                }
+            if (confirm('Are you sure?')) {
+                // if user clicked ok,
+                // pass the id to delete.php and execute the delete query
+                window.location = 'customers_delete.php?id=' + id;
             }
-        </script>
+        }
+    </script>
 </body>
 
 </html>

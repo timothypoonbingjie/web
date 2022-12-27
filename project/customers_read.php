@@ -108,8 +108,9 @@ include 'check.php'
                 echo "<th>gender</th>";
                 echo "<th>date of birth</th>";
                 echo "<th>register date</th>";
-                echo "<th>Image</th>";
+                echo "<th class=\"text-center\">Image</th>";
                 echo "<th>account status</th>";
+                echo "<th>Action</th>";
                 echo "</tr>";
 
                 // table body will be here
@@ -127,7 +128,7 @@ include 'check.php'
                     echo "<th>{$gender}</th>";
                     echo "<th>{$date_of_birth}</th>";
                     echo "<th>{$register_date}</th>";
-                    echo "<td><img src= 'uploads/$image' class='w-25'></td>";
+                    echo "<td class=\"text-center\"><img src= 'uploads/$image' class='w-25'></td>";
                     echo "<th>{$account_status}</th>";
                     echo "<td>";
                     // read one record

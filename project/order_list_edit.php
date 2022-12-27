@@ -94,9 +94,21 @@
 
         //include database connection
         include 'config/database.php';
+        
         $error_message = "";
         $id = isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
+        try {
+            $query = "SELECT id as summaryid, username, date FROM order_summary GROUP BY id";
+            $stmt = $con->prepare($query);
+            $stmt->bindParam(":id", $id);
+            $stmt->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            extract($row);
+        } catch (PDOException $exception) {
+            die('ERROR: ' . $exception->getMessage());
+        }
 
+        
         // check if form was submitted
         if ($_POST) {
 
@@ -175,7 +187,7 @@
         }
         try {
             // prepare select query
-            $query = "SELECT * FROM order_summary WHERE order_summary.id =:id";
+            $query = "SELECT * FROM order_summary WHERE id =:id";
             $stmt = $con->prepare($query);
             $stmt->bindParam(":id", $id);
             $stmt->execute();
@@ -184,6 +196,7 @@
         } catch (PDOException $exception) {
             die('ERROR: ' . $exception->getMessage());
         }
+
 
         ?>
 
@@ -251,7 +264,7 @@
                 }
                 ?>
                 <tr>
-                    
+
                     <td><a href='order_summary.php' class='btn btn-primary'>Back to Order Summary</a></td>
                     <td>
                         <a href='product_read.php' class='btn btn-primary'>Back to read products</a>
