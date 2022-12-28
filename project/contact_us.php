@@ -11,90 +11,44 @@
 </head>
 
 <body>
-<div class="container">
-        
-        <nav class="navbar navbar-expand-lg bg-info">
-       
-            <a class="navbar-brand " href="index.php">Home</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Customer
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="create_customers.php">create customer</a></li>
-                            <li><a class="dropdown-item" href="customers_read.php">read customer</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Order
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="create_new_order.php">create order</a></li>
-                            <li><a class="dropdown-item" href="order_summary.php">order list</a></li>
-                            
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Product
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="product_create.php">create product</a></li>
-                            <li><a class="dropdown-item" href="product_read.php">read product</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="contact_us.php">Contact Us</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="log_out.php">Log Out</a>
-                    </li>
-                </ul>
+    <?php
+    include 'topnav.php'
+    ?>
 
-            </div>
+    <div class="d-flex justify-content-center mt-5">
+        <h1>Contact Us</h1>
+    </div>
 
-        </nav>
-
-        <div class="d-flex justify-content-center mt-5">
-            <h1>Contact Us</h1>
+    <div class="row m-5">
+        <div class="col">
+            Email:<br>
+            timothypoon1015@e.newera.edu.my
         </div>
-
-        <div class="row m-5">
-            <div class="col">
-              Email:<br>
-              timothypoon1015@e.newera.edu.my  
-            </div>
-            <div class="col">
-              Phone:<br>
-              013-9331358
-            </div>
-            <div class="col">
-              Instagram:<br>
-              zhe_1026
-            </div>
-          </div>
-
-          <div class="d-flex justify-content-center mt-5">
-            <h1>Suggestion</h1>
+        <div class="col">
+            Phone:<br>
+            013-9331358
         </div>
+        <div class="col">
+            Instagram:<br>
+            zhe_1026
+        </div>
+    </div>
 
-        <form>
-            <div class="mb-3">
-              <label for="name" class="form-label">Name</label>
-              <input type="text" class="form-control" id="name">
-            </div>
-            <div class="mb-3">
-              <label for="suggestion" class="form-label">Suggestion</label>
-              <textarea type="text" class="form-control" id="suggestion"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </form>
+    <div class="d-flex justify-content-center mt-5">
+        <h1>Suggestion</h1>
+    </div>
+
+    <form>
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name">
+        </div>
+        <div class="mb-3">
+            <label for="suggestion" class="form-label">Suggestion</label>
+            <textarea type="text" class="form-control" id="suggestion"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
 
     </div>
 </body>

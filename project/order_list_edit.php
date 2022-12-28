@@ -32,251 +32,214 @@
 
 <body>
     <!-- container -->
-    <div class="container">
-
-        <nav class="navbar navbar-expand-lg bg-info">
-
-            <a class="navbar-brand " href="index.php">Home</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Customer
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="create_customers.php">create customer</a></li>
-                            <li><a class="dropdown-item" href="customers_read.php">read customer</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Order
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="create_new_order.php">create order</a></li>
-                            <li><a class="dropdown-item" href="order_summary.php">order list</a></li>
-
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Product
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="product_create.php">create product</a></li>
-                            <li><a class="dropdown-item" href="product_read.php">read product</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="contact_us.php">Contact Us</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="log_out.php">Log Out</a>
-                    </li>
-                </ul>
-
-            </div>
-
-        </nav>
-        <div class="page-header">
-            <h1>Edit Order List</h1>
-        </div>
-        <!-- PHP read record by ID will be here -->
+    <?php
+    include 'topnav.php'
+    ?>
+    <div class="page-header">
+        <h1>Edit Order List</h1>
+    </div>
+    <!-- PHP read record by ID will be here -->
 
 
-        <?php
-        // get passed parameter value, in this case, the record ID
-        // isset() is a PHP function used to verify if a value is there or not
+    <?php
+    // get passed parameter value, in this case, the record ID
+    // isset() is a PHP function used to verify if a value is there or not
 
 
-        //include database connection
-        include 'config/database.php';
-        
-        $error_message = "";
-        $id = isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
-        try {
-            $query = "SELECT id as summaryid, username, date FROM order_summary GROUP BY id";
-            $stmt = $con->prepare($query);
-            $stmt->bindParam(":id", $id);
-            $stmt->execute();
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            extract($row);
-        } catch (PDOException $exception) {
-            die('ERROR: ' . $exception->getMessage());
+    //include database connection
+    include 'config/database.php';
+
+    $error_message = "";
+    $id = isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
+    try {
+        $query = "SELECT id as summaryid, username, date FROM order_summary GROUP BY id";
+        $stmt = $con->prepare($query);
+        $stmt->bindParam(":id", $id);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        extract($row);
+    } catch (PDOException $exception) {
+        die('ERROR: ' . $exception->getMessage());
+    }
+
+
+    // check if form was submitted
+    if ($_POST) {
+
+        $username = $_POST['username'];
+        $product_id = $_POST['product_id'];
+        $quantity = $_POST['quantity'];
+        if ($username == 'Select Customer Username') {
+            $error_message .= "<div class='alert alert-danger'>Please choose your order.</div>";
+        }
+        if ($product_id == ['Select product']) {
+            $error_message .= "<div class='alert alert-danger'>Please choose your product.</div>";
+        }
+        if ($quantity <= ["0"]) {
+            $error_message .= "<div class='alert alert-danger'>The quantity cannot below 1</div>";
         }
 
-        
-        // check if form was submitted
-        if ($_POST) {
+        if ($username == "") {
+            $error_message .= "<div class='alert alert-danger'>Please select your username!</div>";
+        }
 
-            $username = $_POST['username'];
-            $product_id = $_POST['product_id'];
-            $quantity = $_POST['quantity'];
+        if ($product_id == [""]) {
+            $error_message .= "<div class='alert alert-danger'>Please select your product!</div>";
+        }
 
-            if ($username == "") {
-                $error_message .= "<div class='alert alert-danger'>Please select your username!</div>";
-            }
+        if ($quantity == [""]) {
+            $error_message .= "<div class='alert alert-danger'>Please enter how many product you want!</div>";
+        }
 
-            if ($product_id == [""]) {
-                $error_message .= "<div class='alert alert-danger'>Please select your product!</div>";
-            }
+        if (!empty($error_message)) {
+            echo "<div class='alert alert-danger'>{$error_message}</div>";
+        } else {
 
-            if ($quantity == [""]) {
-                $error_message .= "<div class='alert alert-danger'>Please enter how many product you want!</div>";
-            }
+            try {
+                // insert query
+                $query = "UPDATE order_summary SET username=:username, date=:date WHERE id=:id";
+                // prepare query for execution
+                $stmt = $con->prepare($query);
+                // bind the parameters
+                $stmt->bindParam(':username', $username);
+                $date = date('Y-m-d H:i:s'); // get the current date and time
+                $stmt->bindParam(':date', $date);
+                $stmt->bindParam(':id', $id);
 
-            if (!empty($error_message)) {
-                echo "<div class='alert alert-danger'>{$error_message}</div>";
-            } else {
+                // Execute the query
+                if ($stmt->execute()) {
+                    echo "<div class='alert alert-success'>Your order is updated.</div>";
+                    $query_delete = "DELETE FROM order_detials WHERE order_id=:order_id";
+                    $stmt_delete = $con->prepare($query_delete);
+                    $stmt_delete->bindParam(':order_id', $id);
+                    if ($stmt_delete->execute()) {
 
-                try {
-                    // insert query
-                    $query = "UPDATE order_summary SET username=:username, date=:date WHERE id=:id";
-                    // prepare query for execution
-                    $stmt = $con->prepare($query);
-                    // bind the parameters
-                    $stmt->bindParam(':username', $username);
-                    $date = date('Y-m-d H:i:s'); // get the current date and time
-                    $stmt->bindParam(':date', $date);
-                    $stmt->bindParam(':id', $id);
-
-                    // Execute the query
-                    if ($stmt->execute()) {
-                        echo "<div class='alert alert-success'>Your order is updated.</div>";
-                        $query_delete = "DELETE FROM order_detials WHERE order_id=:order_id";
-                        $stmt_delete = $con->prepare($query_delete);
-                        $stmt_delete->bindParam(':order_id', $id);
-                        if ($stmt_delete->execute()) {
-
-                            for ($count = 0; $count < count($product_id); $count++) {
-                                try {
-                                    // insert query
-                                    $query_insert = "INSERT INTO order_detials SET order_id=:order_id, product_id=:product_id, quantity=:quantity";
-                                    // prepare query for execution
-                                    $stmt_insert = $con->prepare($query_insert);
-                                    // bind the parameters
-                                    $stmt_insert->bindParam(':order_id', $id);
-                                    $stmt_insert->bindParam(':product_id', $product_id[$count]);
-                                    $stmt_insert->bindParam(':quantity', $quantity[$count]);
-                                    //echo $product_id[$count];
-                                    // Execute the query
-                                    $record_number = $count + 1;
-                                    if ($stmt_insert->execute()) {
-                                    } else {
-                                        echo "<div class='alert alert-danger'>Unable to save record.</div>";
-                                    }
+                        for ($count = 0; $count < count($product_id); $count++) {
+                            try {
+                                // insert query
+                                $query_insert = "INSERT INTO order_detials SET order_id=:order_id, product_id=:product_id, quantity=:quantity";
+                                // prepare query for execution
+                                $stmt_insert = $con->prepare($query_insert);
+                                // bind the parameters
+                                $stmt_insert->bindParam(':order_id', $id);
+                                $stmt_insert->bindParam(':product_id', $product_id[$count]);
+                                $stmt_insert->bindParam(':quantity', $quantity[$count]);
+                                //echo $product_id[$count];
+                                // Execute the query
+                                $record_number = $count + 1;
+                                if ($stmt_insert->execute()) {
+                                } else {
+                                    echo "<div class='alert alert-danger'>Unable to save record.</div>";
                                 }
-                                // show errorproduct_id
-                                catch (PDOException $exception) {
-                                    die('ERROR: ' . $exception->getMessage());
-                                }
+                            }
+                            // show errorproduct_id
+                            catch (PDOException $exception) {
+                                die('ERROR: ' . $exception->getMessage());
                             }
                         }
-                    } else {
-                        echo "<div class='alert alert-danger'>Unable to save record.</div>";
                     }
-                }
-                // show error
-                catch (PDOException $exception) {
-                    die('ERROR: ' . $exception->getMessage());
+                } else {
+                    echo "<div class='alert alert-danger'>Unable to save record.</div>";
                 }
             }
+            // show error
+            catch (PDOException $exception) {
+                die('ERROR: ' . $exception->getMessage());
+            }
         }
-        try {
-            // prepare select query
-            $query = "SELECT * FROM order_summary WHERE id =:id";
-            $stmt = $con->prepare($query);
-            $stmt->bindParam(":id", $id);
-            $stmt->execute();
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            extract($row);
-        } catch (PDOException $exception) {
-            die('ERROR: ' . $exception->getMessage());
-        }
+    }
+    try {
+        // prepare select query
+        $query = "SELECT * FROM order_summary WHERE id =:id";
+        $stmt = $con->prepare($query);
+        $stmt->bindParam(":id", $id);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        extract($row);
+    } catch (PDOException $exception) {
+        die('ERROR: ' . $exception->getMessage());
+    }
 
 
-        ?>
+    ?>
 
 
 
-        <!--we have our html form here where new record information can be updated-->
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id={$id}"); ?>" method="post">
-            <table id="delete_row" class='table table-hover table-responsive table-bordered'>
+    <!--we have our html form here where new record information can be updated-->
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id={$id}"); ?>" method="post">
+        <table id="delete_row" class='table table-hover table-responsive table-bordered'>
 
-                <tr>
-                    <td>Username</td>
-                    <td colspan="3">
-                        <select class="form-select form-select-lg" name="username" aria-label=".form-select-lg example">
-                            <option><?php echo htmlspecialchars($username, ENT_QUOTES);  ?></option>
-                            <?php
-                            $query = "SELECT user FROM customers ORDER BY user DESC";
-                            $stmt = $con->prepare($query);
-                            $stmt->execute();
-                            $row = $stmt->rowCount();
-                            if ($row > 0) {
-                                // table body will be here
-                                // retrieve our table contents
-                                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                    // extract row
-                                    extract($row);
-                                    // creating new table row per record
-                                    echo "<option value=\"$user\">$user</option>";
-                                }
+            <tr>
+                <td>Username</td>
+                <td colspan="3">
+                    <select class="form-select form-select-lg" name="username" aria-label=".form-select-lg example">
+                        <option><?php echo htmlspecialchars($username, ENT_QUOTES);  ?></option>
+                        <?php
+                        $query = "SELECT user FROM customers ORDER BY user DESC";
+                        $stmt = $con->prepare($query);
+                        $stmt->execute();
+                        $row = $stmt->rowCount();
+                        if ($row > 0) {
+                            // table body will be here
+                            // retrieve our table contents
+                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                // extract row
+                                extract($row);
+                                // creating new table row per record
+                                echo "<option value=\"$user\">$user</option>";
                             }
-                            ?>
-                        </select>
-                    </td>
-                </tr>
+                        }
+                        ?>
+                    </select>
+                </td>
+            </tr>
 
-                <?php
-                $query = "SELECT * FROM order_detials INNER JOIN products ON products.id = order_detials.product_id WHERE order_detials.order_id=:order_id";
-                $stmt = $con->prepare($query);
-                $stmt->bindParam(":order_id", $id);
-                $stmt->execute();
-                $count = $stmt->rowCount();
-                if ($count > 0) {
-                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                        extract($row);
-                        echo "<tr class='pRow'>  
+            <?php
+            $query = "SELECT * FROM order_detials INNER JOIN products ON products.id = order_detials.product_id WHERE order_detials.order_id=:order_id";
+            $stmt = $con->prepare($query);
+            $stmt->bindParam(":order_id", $id);
+            $stmt->execute();
+            $count = $stmt->rowCount();
+            if ($count > 0) {
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    extract($row);
+                    echo "<tr class='pRow'>  
                             <td class='col-3'>Product Name</td>
                             <td class='col-3'><select class=\"form-select form-select\" aria-label=\".form-select example\" name=\"product_id[]\">
                             <option value=\"$id\">$name</option>";
-                        $query = "SELECT id, name, price FROM products ORDER BY id DESC";
-                        $stmt2 = $con->prepare($query);
-                        $stmt2->execute();
-                        $num = $stmt2->rowCount();
-                        if ($num > 0) {
-                            while ($row = $stmt2->fetch(PDO::FETCH_ASSOC)) {
-                                extract($row);
-                                echo "<option value=\"$id\">$name</option>";
-                            }
+                    $query = "SELECT id, name, price FROM products ORDER BY id DESC";
+                    $stmt2 = $con->prepare($query);
+                    $stmt2->execute();
+                    $num = $stmt2->rowCount();
+                    if ($num > 0) {
+                        while ($row = $stmt2->fetch(PDO::FETCH_ASSOC)) {
+                            extract($row);
+                            echo "<option value=\"$id\">$name</option>";
                         }
-                        echo "
+                    }
+                    echo "
                             
                             <td class='col-3'>Quantity</td>
                             <td class='col-3'><input type='number' name='quantity[]' value='$quantity' class='form-control' /></td>
                             <td><input type=\"button\" value=\"Delete\" class='btn btn-danger' onclick=\"deleteRow(this)\"></td>
                             </tr>";
-                    }
                 }
-                ?>
-                <tr>
+            }
+            ?>
+            <tr>
 
-                    <td><a href='order_summary.php' class='btn btn-primary'>Back to Order Summary</a></td>
-                    <td>
-                        <a href='product_read.php' class='btn btn-primary'>Back to read products</a>
-                    </td>
-                    <td></td>
-                    <td>
-                        <input type='submit' value='Save Changes' class='btn btn-success' onclick="checkDuplicate(event)" />
-                    </td>
-                </tr>
+                <td><a href='order_summary.php' class='btn btn-primary'>Back to Order Summary</a></td>
+                <td>
+                    <a href='product_read.php' class='btn btn-primary'>Back to read products</a>
+                </td>
+                <td></td>
+                <td>
+                    <input type='submit' value='Save Changes' class='btn btn-success' onclick="checkDuplicate(event)" />
+                </td>
+            </tr>
 
-            </table>
-        </form>
+        </table>
+    </form>
 
 
     </div>

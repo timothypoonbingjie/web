@@ -29,7 +29,6 @@ session_start();
 
             $user = ($_POST['user']);
             $passwords = ($_POST['passwords']);
-
             $select = "SELECT user, passwords, account_status FROM customers WHERE user = '$user'";
             $result = mysqli_query($mysqli, $select);
             $row = mysqli_fetch_assoc($result);
@@ -44,7 +43,7 @@ session_start();
                     $_SESSION["Pass"] = "Pass";
                 }
             } else {
-                echo "<div class='alert alert-danger'>Please enter your username and password.</div>";
+                echo "<div class='alert alert-danger w-25 d-flex justify-content-center align-self-center ms-auto me-auto'>Please enter your username and password.</div>";
             }
         };
 
@@ -70,7 +69,8 @@ session_start();
                     <div class="checkbox mb-3">
                         
                     </div>
-                    <button class="w-50 btn btn-lg btn-primary" type="submit">Login</button>
+                    <div><button class="w-50 btn btn-lg btn-primary" type="submit">Login</button>
+                    <a href='create_customers.php' class='mt-3 btn btn-primary'>Register now</a></div>
                 </table>
                 
             </form>

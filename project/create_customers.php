@@ -1,3 +1,5 @@
+<?php session_start();
+?>
 <!DOCTYPE HTML>
 <html>
 
@@ -11,55 +13,12 @@
 </head>
 
 <body>
-    <div class="container">
+        <?php
 
-        <nav class="navbar navbar-expand-lg bg-info">
-
-            <a class="navbar-brand " href="index.php">Home</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Customer
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="create_customers.php">create customer</a></li>
-                            <li><a class="dropdown-item" href="customers_read.php">read customer</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Order
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="create_new_order.php">create order</a></li>
-                            <li><a class="dropdown-item" href="order_summary.php">order list</a></li>
-                            
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Product
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="product_create.php">create product</a></li>
-                            <li><a class="dropdown-item" href="product_read.php">read product</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="contact_us.php">Contact Us</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="log_out.php">Log Out</a>
-                    </li>
-                </ul>
-
-            </div>
-
-        </nav>
+            if (isset($_SESSION["Pass"])){
+                include'topnav.php';
+            }
+        ?>
 
         <!-- container -->
         <div class="container">
@@ -121,7 +80,7 @@
 
 
                 if ($confirm_passwords == "") {
-                    echo "<div class='alert alert-danger'>Please enter your confirm password";
+                    echo "<div class='alert alert-danger'>Please enter your confirm password</div>";
                     $flag = 1;
                 } elseif ($passwords != $confirm_passwords) {
                     echo "<div class='alert alert-danger'>Password need same with confirm password</div>";
@@ -225,6 +184,7 @@
                         $stmt->bindParam(':image', $image);
                         // Execute the query
                         if ($stmt->execute()) {
+                            header("Location: customers_read.php?action=update");
                             echo "<div class='alert alert-success'>Record was saved.</div>";
                         } else {
                             echo "<div class='alert alert-danger'>Unable to save record.</div>";
@@ -312,14 +272,14 @@
                         <td></td>
                         <td>
                             <input type='submit' value='Save' class='btn btn-primary' />
-                            <a href='customers_read.php' class='btn btn-danger'>Back to read products</a>
+                            <a href='customers_read.php' class='btn btn-danger'>Back to customers read</a>
                         </td>
                     </tr>
                 </table>
             </form>
 
 
-        </div>
+        
         <!-- end .container -->
     </div>
 
