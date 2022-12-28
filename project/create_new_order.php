@@ -39,13 +39,15 @@ include 'check.php'
                     echo "<div class='alert alert-danger'>Please choose your order.</div>";
                     $flag = 1;
                 }
-                if ($product_id == ['Select product']) {
-                    echo "<div class='alert alert-danger'>Please choose your product.</div>";
-                    $flag = 1;
-                }
-                if ($quantity <= ["0"]) {
-                    echo "<div class='alert alert-danger'>The quantity cannot below 1</div>";
-                    $flag = 1;
+                for ($i = 0; $i < count($product_id); $i++) {
+                    if (empty($product_id[$i])  || $product_id[$i] == 'Select Customer Username') {
+                        echo "<div class='alert alert-danger'>Please choose a product for row $i.</div>";
+                        $flag = false;
+                    }
+                    if (empty($quantity[$i])  || $quantity[$i] <= 0) {
+                        echo "<div class='alert alert-danger'>Please enter a valid quantity for row $i.</div>";
+                        $flag = false;
+                    }
                 }
 
                 if ($flag == 0) {
