@@ -1,0 +1,6 @@
+.image {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image:url(../image/colorbg.jpg);
+    height: 100vh;
+}
