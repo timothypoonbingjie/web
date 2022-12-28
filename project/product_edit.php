@@ -6,6 +6,8 @@
     <!-- Latest compiled and minified Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <link href="css/style.css" rel="stylesheet" />
+
     <!-- custom css -->
     <style>
         .m-r-1em {
@@ -30,7 +32,7 @@
     <!-- container -->
     <?php
     include 'topnav.php'
-    ?>
+    ?><div class="container-fluid image" style="background-image:url('image/bright2.png')">
     <div class="page-header">
         <h1>Update Product</h1>
     </div>
@@ -77,7 +79,7 @@
     <!-- PHP post to update record will be here -->
     <?php
     // check if form was submitted
-    if ($_POST) {
+    if (isset($_POST['update'])) {
 
         $name = $_POST['name'];
         $description = $_POST['description'];
@@ -150,27 +152,6 @@
             $image = "emptybox.png";
         }
 
-        if (isset($_POST['delete'])) {
-            $image = htmlspecialchars(strip_tags($image));
-
-            $image = !empty($_FILES["image"]["name"])
-                ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"])
-                : "";
-            $target_directory = "uploads/";
-            $target_file = $target_directory . $image;
-            $file_type = pathinfo($target_file, PATHINFO_EXTENSION);
-
-            unlink("uploads/" . $row['image']);
-            $_POST['image'] = null;
-            $query = "UPDATE products
-                            SET image=:image WHERE id = :id";
-            // prepare query for excecution
-            $stmt = $con->prepare($query);
-            $stmt->bindParam(':image', $image);
-            $stmt->bindParam(':id', $id);
-            // Execute the query
-            $stmt->execute();
-        }
 
         if (!empty($error_message)) {
             echo "<div class='alert alert-danger'>{$error_message}</div>";
@@ -209,8 +190,39 @@
                 die('ERROR: ' . $exception->getMessage());
             }
         }
-    } ?>
+    }
+    if (isset($_POST['delete'])) {
 
+        $image = htmlspecialchars(strip_tags($image));
+
+        $image = !empty($_FILES["image"]["name"])
+            ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"])
+            : "";
+        $target_directory = "uploads/";
+        $target_file = $target_directory . $image;
+        $file_type = pathinfo($target_file, PATHINFO_EXTENSION);
+        if ($row['image'] == "nonprofile.jpg") {
+            echo "<div class='alert alert-danger'>Photo cannot be delete</div>";
+        } else {
+            unlink("uploads/" . $row['image']);
+
+            $_FILES["image"]["name"] = null;
+            if (($_FILES["image"]["name"]) == null
+            ) {
+                $image = "emptybox.png";
+            }
+            $query = "UPDATE products
+                            SET image=:image WHERE id = :id";
+            // prepare query for excecution
+            $stmt = $con->prepare($query);
+            $stmt->bindParam(':image', $image);
+            $stmt->bindParam(':id', $id);
+            // Execute the query
+            $stmt->execute();
+
+        }
+    }
+    ?>
 
 
     <!--we have our html form here where new record information can be updated-->
@@ -247,7 +259,7 @@
             <tr>
                 <td></td>
                 <td>
-                    <input type='submit' value='Save Changes' class='btn btn-primary' />
+                    <input type='submit' name="update" value='Save Changes' class='btn btn-primary' />
                     <a href='product_read.php' class='btn btn-danger'>Back to read products</a>
                     <?php echo "<a href='product_delete.php?id={$id}' onclick=delete_customers([$id});' class='btn btn-danger'>Delete product</a>"; ?>
                 </td>
@@ -269,6 +281,7 @@
             }
         }
     </script>
+    </div>
 </body>
 
 </html>

@@ -8,18 +8,20 @@
     <!-- Latest compiled and minified Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <link href="css/style.css" rel="stylesheet" />
 
 
 </head>
 
 <body>
+   
         <?php
 
-            if (isset($_SESSION["Pass"])){
-                include'topnav.php';
-            }
+        if (isset($_SESSION["Pass"])) {
+            include 'topnav.php';
+        }
         ?>
-
+        <div class="container-fluid image" style="background-image:url('image/bright2.png')">
         <!-- container -->
         <div class="container">
             <div class="page-header text-center">
@@ -42,7 +44,7 @@
                 $account_status = $_POST['account_status'];
                 $image = !empty($_FILES["image"]["name"])
                     ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"])
-                    : "";     
+                    : "";
                 $error_message = "";
 
                 // include database connection
@@ -157,10 +159,10 @@
                         }
                     }
                 }
-                if($image == null){
+                if ($image == null) {
                     $image = "nonprofile.jpg";
                 }
-                
+
                 if ($flag == 0) {
 
 
@@ -205,7 +207,7 @@
                 <table class='table table-hover table-responsive table-bordered'>
                     <tr>
                         <td>Username</td>
-                        <td><input type='text' name='user' value='<?php echo $user ?>'class='form-control' /></td>
+                        <td><input type='text' name='user' value='<?php echo $user ?>' class='form-control' /></td>
                     </tr>
                     <tr>
                         <td>Password</td>
@@ -279,11 +281,11 @@
             </form>
 
 
-        
-        <!-- end .container -->
+
+            <!-- end .container -->
+        </div>
+
     </div>
-
-
 </body>
 
 </html>

@@ -5,7 +5,8 @@
     <title>PDO - Read Records - PHP CRUD Tutorial</title>
     <!-- Latest compiled and minified Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <link href="css/style.css" rel="stylesheet" />
 
 
 
@@ -34,7 +35,7 @@
     <!-- container -->
     <?php
     include 'topnav.php'
-    ?>
+    ?><div class="container-fluid image" style="background-image:url('image/bright2.png')">
     <div class="page-header">
         <h1>Edit Order List</h1>
     </div>
@@ -128,6 +129,8 @@
                                 // Execute the query
                                 $record_number = $count + 1;
                                 if ($stmt_insert->execute()) {
+                                    header("Location: order_summary.php?action=update");
+                                    echo "<div class='alert alert-success'>Record was saved.</div>";
                                 } else {
                                     echo "<div class='alert alert-danger'>Unable to save record.</div>";
                                 }
@@ -227,12 +230,14 @@
             }
             ?>
             <tr>
+                <td colspan="2">
+                    <input type="button" value="Add More Product" class="add_one" />
 
+                </td>
                 <td><a href='order_summary.php' class='btn btn-primary'>Back to Order Summary</a></td>
                 <td>
                     <a href='product_read.php' class='btn btn-primary'>Back to read products</a>
                 </td>
-                <td></td>
                 <td>
                     <input type='submit' value='Save Changes' class='btn btn-success' onclick="checkDuplicate(event)" />
                 </td>
@@ -273,7 +278,7 @@
             }
         }
     </script>
-
+</div>
     <!-- end .container -->
 </body>
 
