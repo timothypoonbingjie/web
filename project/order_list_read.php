@@ -18,7 +18,7 @@
     include 'topnav.php'
     ?>
 
-    <div class="page-header">
+    <div class="page-header mx-5">
         <h1>Read order</h1>
     </div>
 
@@ -58,7 +58,7 @@
 
         if ($count > 0) {
 
-            echo "<table class='table table-hover table-responsive table-borderless w-50 border border-3'>";
+            echo "<table class='table table-hover table-responsive table-borderless w-50 border border-3 mx-5'>";
 
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 extract($row);
@@ -92,7 +92,7 @@
 
     <!-- HTML read one record table will be here -->
     <!--we have our html table here where the record will be displayed-->
-    <div class="w-50 d-flex justify-content-end">
+    <div class="w-50 d-flex justify-content-end mx-5">
         <a href='order_summary.php' class='btn btn-danger'>Back to read Order Summary</a>
     </div>
 
