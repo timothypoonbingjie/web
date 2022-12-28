@@ -21,7 +21,7 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="create_new_order.php">create order</a></li>
-                    <li><a class="dropdown-item" href="order_summary">order summary</a></li>
+                    <li><a class="dropdown-item" href="order_summary.php">order summary</a></li>
                 </ul>
             </li>
             <li class="nav-item dropdown bg-primary rounded-3 m-2">
