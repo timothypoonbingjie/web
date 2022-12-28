@@ -99,9 +99,9 @@
                 $diff = date_diff($date1, $date2);
                 $result = $diff->format("%a");
                 $pass = true;
-                $passw = $_POST['passw'];
-                $new_pass = $_POST['new_pass'];
-                $comfirm_password = $_POST['comfirm_password'];
+                $passw = md5($_POST['passw']);
+                $new_pass = md5($_POST['new_pass']);
+                $comfirm_password = md5($_POST['comfirm_password']);
                 $select = "SELECT passwords FROM customers WHERE id = :id ";
                 $stmt = $con->prepare($select);
 
@@ -132,11 +132,10 @@
                 if ($passw == "" && $new_pass == "" && $comfirm_password == "") {
                     $keeppass = true;
                 } else {
-                    if ($row['passwords'] == $passw) {
-                        $uppercase = preg_match('@[A-Z]@', $new_pass);
+                    if ($row['passwords'] == $passw) { 
                         $lowercase = preg_match('@[a-z]@', $new_pass);
                         $number    = preg_match('@[0-9]@', $new_pass);
-                        if (!$uppercase || !$lowercase || !$number || strlen($new_pass) < 8) {
+                        if (!$lowercase || !$number || strlen($new_pass) < 8) {
                             echo "<div class='alert alert-danger'>Password should be at least 8 characters in length and should include at least one upper case letter, one number.</div>";
                             $pass = false;
                         }
@@ -214,7 +213,7 @@
                         if ($keeppass == true) {
                             $new_pass = $row['passwords'];
                         } else {
-                            $new_pass = htmlspecialchars(strip_tags($_POST['new_pass']));
+                            $new_pass = htmlspecialchars(md5(strip_tags($_POST['new_pass'])));
                         }
 
                         // bind the parameters
@@ -246,7 +245,7 @@
                     if ($keeppass == true) {
                         $new_pass = $row['passwords'];
                     } else {
-                        $new_pass = htmlspecialchars(strip_tags($_POST['new_pass']));
+                        $new_pass = htmlspecialchars(md5(strip_tags($_POST['new_pass'])));
                     }
 
 
@@ -312,19 +311,19 @@
             <table class='table table-hover table-responsive table-bordered'>
                 <tr>
                     <td>Username</td>
-                    <td><input type='text' name='user' value="<?php echo htmlspecialchars($user, ENT_QUOTES);  ?>" class='form-control' /></td>
+                    <td><input type='text' name='user' value="<?php echo htmlspecialchars($user, ENT_QUOTES);  ?>" class='form-control'/></td>
                 </tr>
                 <tr>
                     <td>Old Password</td>
-                    <td><input type='text' name='passw' class='form-control' /></td>
+                    <td><input type='text' name='passw' class='form-control' placeholder="Please enter your Old Password" /></td>
                 </tr>
                 <tr>
                     <td>New Password</td>
-                    <td><input type='text' name='new_pass' class='form-control' /></td>
+                    <td><input type='text' name='new_pass' class='form-control' placeholder="Please enter your New Password" /></td>
                 </tr>
                 <tr>
                     <td>Comfirm Password</td>
-                    <td><input type='text' name='comfirm_password' class='form-control' /></td>
+                    <td><input type='text' name='comfirm_password' class='form-control' placeholder="Please make sure your password is same with Newpassword "/></td>
                 </tr>
                 <tr>
                     <td>First Name</td>
