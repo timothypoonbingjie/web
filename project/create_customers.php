@@ -35,8 +35,8 @@
             $user = $first_name = $last_name = $date_of_birth = "";
             if ($_POST) {
                 $user = $_POST['user'];
-                $passwords = $_POST['passwords'];
-                $confirm_passwords = $_POST['confirm_passwords'];
+                $passwords = md5($_POST['passwords']);
+                $confirm_passwords = md5($_POST['confirm_passwords']);
                 $first_name = $_POST['first_name'];
                 $last_name = $_POST['last_name'];
                 $gender = $_POST['gender'];
@@ -65,9 +65,6 @@
                 }
                 if ($passwords == "") {
                     echo "<div class='alert alert-danger'>Please enter your password</div>";
-                    $flag = 1;
-                } elseif (!preg_match('/[A-Z]/', $passwords)) {
-                    echo "<div class='alert alert-danger'>Password need include uppercase</div>";
                     $flag = 1;
                 } elseif (!preg_match('/[a-z]/', $passwords)) {
                     echo "<div class='alert alert-danger'>Password need include lowercase</div>";
@@ -207,28 +204,28 @@
                 <table class='table table-hover table-responsive table-bordered'>
                     <tr>
                         <td>Username</td>
-                        <td><input type='text' name='user' value='<?php echo $user ?>' class='form-control' /></td>
+                        <td><input type='text' name='user' value='<?php echo $user ?>' class='form-control' placeholder="Please enter your username" /></td>
                     </tr>
                     <tr>
                         <td>Password</td>
-                        <td><input type='password' name='passwords' class='form-control' /></td>
+                        <td><input type='password' name='passwords' class='form-control' placeholder="Please enter your password" /></td>
                     </tr>
                     <tr>
                         <td>Confirm Password</td>
-                        <td><input type='password' name='confirm_passwords' class='form-control' /></td>
+                        <td><input type='password' name='confirm_passwords' class='form-control' placeholder="Confirm Password need same with Password"/></td>
                     </tr>
                     <tr>
                         <td>First name</td>
-                        <td><input type='text' name='first_name' value='<?php echo $first_name ?>' class='form-control' /></td>
+                        <td><input type='text' name='first_name' value='<?php echo $first_name ?>' class='form-control' placeholder="Please enter your First name" /></td>
                     </tr>
                     <tr>
                         <td>Last name</td>
-                        <td><input type='text' name='last_name' value='<?php echo $last_name ?>' class='form-control' /></td>
+                        <td><input type='text' name='last_name' value='<?php echo $last_name ?>' class='form-control' placeholder="Please enter your lastname" /></td>
                     </tr>
                     <tr>
                         <td>Images</td>
                         <td>
-                            <input type="file" name="image" />
+                            <input type="file" name="image"/>
                             <input type='submit' name='delete' value='Delete Image' class='btn btn-danger' />
                         </td>
                     </tr>

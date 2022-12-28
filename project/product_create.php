@@ -170,19 +170,19 @@ include 'check.php'
             <table class='table table-hover table-responsive table-bordered'>
                 <tr>
                     <td>Name</td>
-                    <td><input type='text' name='name' value='<?php echo $name ?>' class='form-control' /></td>
+                    <td><input type='text' name='name' value='<?php echo $name ?>' class='form-control' placeholder="Please enter your Product's name"/></td>
                 </tr>
                 <tr>
                     <td>Description</td>
-                    <td><textarea type='text' name='description' value='<?php echo $description ?>' class='form-control'></textarea></td>
+                    <td><textarea type='text' name='description' value='<?php echo $description ?>' class='form-control'placeholder="Please enter your Product's desciption"></textarea></td>
                 </tr>
                 <tr>
                     <td>Price</td>
-                    <td><input type='text' name='price' value='<?php echo $price ?>' class='form-control' /></td>
+                    <td><input type='text' name='price' value='<?php echo $price ?>' class='form-control' placeholder="Please enter your Product's Price"/></td>
                 </tr>
                 <tr>
                     <td>Promotion_Price</td>
-                    <td><input type='text' name='promotion_price' value='<?php echo $promotion_price ?>' class='form-control' /></td>
+                    <td><input type='text' name='promotion_price' value='<?php echo $promotion_price ?>' class='form-control' placeholder="Please enter your Product's Promotion Price"/></td>
                 </tr>
                 <tr>
                     <td>Manufacture Date</td>
