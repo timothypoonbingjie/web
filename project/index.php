@@ -68,11 +68,13 @@
                 // read current record's data
                 try {
                     // prepare select query
-                    $query = "SELECT * FROM order_summary INNER JOIN customers ON customers.user = order_summary.username WHERE order_summary.id = ? ";
+                    $query = "SELECT order_summary.id as summaryid, username, first_name, last_name, date FROM order_summary INNER JOIN customers ON customers.user = order_summary.username  WHERE order_summary.id = ?";
                     $stmt = $con->prepare($query);
+
 
                     // Bind the parameter
                     $stmt->bindParam(1, $id);
+                    echo $id;
 
                     // execute our query
                     $stmt->execute();
@@ -102,13 +104,11 @@
                         <th>Username</th>
                     </tr>
                     <tr class='table-success'>
-                        <td><?php echo htmlspecialchars($id, ENT_QUOTES);  ?></td>
+                        <td><a href="order_list_read.php?id=<?php echo urlencode($summaryid); ?>"><?php echo htmlspecialchars($summaryid, ENT_QUOTES);  ?></td>
                         <td><?php echo htmlspecialchars($date, ENT_QUOTES);  ?></td>
                         <td><?php echo htmlspecialchars($first_name, ENT_QUOTES);  ?></td>
                         <td><?php echo htmlspecialchars($last_name, ENT_QUOTES);  ?></td>
                         <td><?php echo htmlspecialchars($username, ENT_QUOTES);  ?></td>
-
-
                     </tr>
                 </table>
             </div>
@@ -116,7 +116,7 @@
             <div class="container my-3">
                 <div class="my-3">
                     <?php
-                    $query = "SELECT *,sum(price*quantity) AS HIGHEST FROM order_summary INNER JOIN order_detials ON order_detials.order_id = order_summary.id INNER JOIN products ON products.id = order_detials.product_id GROUP BY order_summary.id ORDER BY HIGHEST DESC";
+                    $query = "SELECT order_summary.id as summaryid, username, sum(price*quantity) AS HIGHEST FROM order_summary INNER JOIN order_detials ON order_detials.order_id = order_summary.id INNER JOIN products ON products.id = order_detials.product_id GROUP BY order_summary.id ORDER BY HIGHEST DESC";
                     $stmt = $con->prepare($query);
                     $stmt->execute();
                     $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -132,7 +132,7 @@
                             <th>Highest Amount</th>
                         </tr>
                         <tr class='table-success'>
-                            <td><?php echo htmlspecialchars($id, ENT_QUOTES);  ?></td>
+                            <td><a href="order_list_read.php?id=<?php echo urlencode($id); ?>"><?php echo htmlspecialchars($id, ENT_QUOTES);  ?></td>
                             <td><?php echo htmlspecialchars($date, ENT_QUOTES);  ?></td>
                             <td><?php echo htmlspecialchars($username, ENT_QUOTES);  ?></td>
                             <td><?php $amount = htmlspecialchars(round($HIGHEST), ENT_QUOTES);
@@ -144,18 +144,23 @@
 
                 <div class="my-3">
                     <?php
-                    $query = "SELECT name, sum(quantity) AS popular FROM products INNER JOIN order_detials ON order_detials.product_id = products.id group by name order by sum(quantity) desc limit 5;";
+                    $query = "SELECT id, name, sum(quantity) AS popular FROM products INNER JOIN order_detials ON order_detials.product_id = products.id group by name order by sum(quantity) desc limit 5;";
                     $stmt = $con->prepare($query);
                     $stmt->execute();
                     $count = $stmt->rowCount();
                     if ($count > 0) {
                         echo "<h1 class=\"text-white bg-dark text-center\">Top 5 Selling Product</h1>";
                         echo "<table class='table table-success table-hover table-responsive table-bordered text-center'>";
-                        echo "<tr class='table-light'><th>Product Name</th>
+                        echo "<tr class='table-light'>
+                        <th>Id</th>
+                        <th>Product Name</th>
                  <th>Quantity</th></tr>";
                         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                             extract($row);
                             echo "<tr class='table-success'>";
+                            echo "<td>";
+                            echo "<a href='product_read_one.php?id=" . urlencode($id) . "'>{$id}</a>";
+                            echo "</td>";
                             echo "<td>{$name}</td>";
                             echo "<td>{$popular}</td>";
                             echo "</tr>";
