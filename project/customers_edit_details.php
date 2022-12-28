@@ -230,7 +230,7 @@
 
                         // Execute the query
                         if ($stmt->execute()) {
-                            echo "<div class='alert alert-success'>Record was saved.</div>";
+                            echo "<div class='alert alert-success bg-success text-white'>Record was saved.</div>";
                         } else {
                             echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
                         }
@@ -263,7 +263,7 @@
                     // Execute the query
                     if ($stmt->execute()) {
                         header("Location: customers_read.php?action=update");
-                        echo "<div class='alert alert-success'>Record was saved.</div>";
+                        echo "<div class='alert alert-success bg-success text-white'>Record was saved.</div>";
                     } else {
                         echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
                     }

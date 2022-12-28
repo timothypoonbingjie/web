@@ -147,7 +147,7 @@ include 'check.php'
                     // Execute the query
                     if ($stmt->execute()) {
                         header("Location: product_read.php?action=update");
-                        echo "<div class='alert alert-success'>Record was saved.</div>";
+                        echo "<div class='alert alert-success bg-success text-white'>Record was saved.</div>";
                         // now, if image is not empty, try to upload the image
 
                     } else {

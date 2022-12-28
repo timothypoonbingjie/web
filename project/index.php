@@ -68,7 +68,7 @@
                 // read current record's data
                 try {
                     // prepare select query
-                    $query = "SELECT * FROM order_summary WHERE id = ? ";
+                    $query = "SELECT * FROM order_summary INNER JOIN customers ON customers.user = order_summary.username WHERE order_summary.id = ? ";
                     $stmt = $con->prepare($query);
 
                     // Bind the parameter
@@ -95,14 +95,20 @@
                 <h1 class="text-center text-white bg-dark">Latest Order</h1>
                 <table class='table table-dark table-hover table-responsive table-bordered text-center'>
                     <tr class="table table-light">
-                        <th>Order ID</th>
+                        <th>User ID</th>
                         <th>Order Date</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
                         <th>Username</th>
                     </tr>
                     <tr class='table-success'>
                         <td><?php echo htmlspecialchars($id, ENT_QUOTES);  ?></td>
                         <td><?php echo htmlspecialchars($date, ENT_QUOTES);  ?></td>
+                        <td><?php echo htmlspecialchars($first_name, ENT_QUOTES);  ?></td>
+                        <td><?php echo htmlspecialchars($last_name, ENT_QUOTES);  ?></td>
                         <td><?php echo htmlspecialchars($username, ENT_QUOTES);  ?></td>
+
+
                     </tr>
                 </table>
             </div>
@@ -184,7 +190,7 @@
         </div>
 
     </div>
-    </div>
+
 </body>
 
 </html>

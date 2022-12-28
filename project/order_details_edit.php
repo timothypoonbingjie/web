@@ -100,7 +100,7 @@
             $stmt->bindParam(':details_id', $details_id);
             // Execute the query
             if ($stmt->execute()) {
-                echo "<div class='alert alert-success'>Record was updated.</div>";
+                echo "<div class='alert alert-success bg-success text-white'>Record was updated.</div>";
             } else {
                 echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
             }

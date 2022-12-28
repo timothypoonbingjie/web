@@ -35,7 +35,8 @@
     <!-- container -->
     <?php
     include 'topnav.php'
-    ?><div class="container-fluid image" style="background-image:url('image/bright2.png')">
+    ?>
+    <div class="container-fluid image" style="background-image:url('image/bright2.png')">
     <div class="page-header">
         <h1>Edit Order List</h1>
     </div>
@@ -109,7 +110,7 @@
 
                 // Execute the query
                 if ($stmt->execute()) {
-                    echo "<div class='alert alert-success'>Your order is updated.</div>";
+                    echo "<div class='alert alert-success bg-success text-white'>Your order is updated.</div>";
                     $query_delete = "DELETE FROM order_detials WHERE order_id=:order_id";
                     $stmt_delete = $con->prepare($query_delete);
                     $stmt_delete->bindParam(':order_id', $id);
@@ -130,7 +131,7 @@
                                 $record_number = $count + 1;
                                 if ($stmt_insert->execute()) {
                                     header("Location: order_summary.php?action=update");
-                                    echo "<div class='alert alert-success'>Record was saved.</div>";
+                                    echo "<div class='alert alert-success bg-success text-white'>Record was saved.</div>";
                                 } else {
                                     echo "<div class='alert alert-danger'>Unable to save record.</div>";
                                 }

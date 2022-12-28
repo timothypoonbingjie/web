@@ -32,7 +32,7 @@ include 'check.php'
 
         // if it was redirected from delete.php
         if ($action == 'deleted') {
-            echo "<div class='alert alert-success'>Record was deleted.</div>";
+            echo "<div class='alert alert-success bg-success text-white'>Record was deleted.</div>";
         }
 
 

@@ -69,7 +69,7 @@ include 'check.php'
                             $row = $stmt->fetch(PDO::FETCH_ASSOC);
                             $order_id = $row['order_id'];
                             echo "<div class='alert alert-info'>ID: $order_id</div>";
-                            echo "<div class='alert alert-success'>Your order is save</div>";
+                            echo "<div class='alert alert-success bg-success text-white'>Your order is save</div>";
                             for ($two = 0; $two < count($product_id); $two++) {
                                 try {
                                     // insert query
@@ -85,7 +85,7 @@ include 'check.php'
                                     // Execute the query
                                     if ($stmt->execute()) {
                                         header("Location: order_summary.php?action=update");
-                                        echo "<div class='alert alert-success'>Record was saved.</div>";
+                                        echo "<div class='alert alert-success bg-success text-white'>Record was saved.</div>";
                                     } else {
                                         echo "<div class='alert alert-danger'>Unable to save record.</div>";
                                     }
