@@ -49,7 +49,7 @@ session_start();
         };
 
         if ($_GET) {
-            echo "Please make sure you have access";
+            echo "<div class='alert alert-danger w-25 d-flex justify-content-center align-self-center ms-auto me-auto'>Please make sure you have access</div>";
         }
 
 
