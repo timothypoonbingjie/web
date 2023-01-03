@@ -21,7 +21,7 @@
             include 'topnav.php';
         }
         ?>
-        <div class="container-fluid image" style="background-image:url('image/bright2.png')">
+        <div class="container-fluid image" style="background-image:url('image/brightbg.jpg')">
         <!-- container -->
         <div class="container">
             <div class="page-header text-center">
@@ -49,61 +49,61 @@
 
                 // include database connection
 
-                $flag = 0;
+                
                 if ($user == "") {
-                    echo "<div class='alert alert-danger'>Please enter your username</div>";
-                    $flag = 1;
+                    $error_message .= "<div>Please enter your username</div>";
+                    
                 }
                 $space = " ";
                 $world = $_POST['user'];
                 if (strpos($world, $space) !== false) {
-                    echo "<div class='alert alert-danger'>Username should not space</div>";
-                    $flag = 1;
+                    $error_message .= "<div>Username should not space</div>";
+                    
                 } elseif (strlen($user) < 6) {
-                    echo "<div class='alert alert-danger'>Username need at least 6 charecter</div>";
-                    $flag = 1;
+                    $error_message .= "<div>Username need at least 6 charecter</div>";
+                    
                 }
                 if ($passwords == "") {
-                    echo "<div class='alert alert-danger'>Please enter your password</div>";
-                    $flag = 1;
+                    $error_message .= "<div>Please enter your password</div>";
+                    
                 } elseif (!preg_match('/[a-z]/', $passwords)) {
-                    echo "<div class='alert alert-danger'>Password need include lowercase</div>";
-                    $flag = 1;
+                    $error_message .= "<div>Password need include lowercase</div>";
+                   
                 } elseif (!preg_match('/[0-9]/', $passwords)) {
-                    echo "<div class='alert alert-danger'>Password need include number</div>";
-                    $flag = 1;
+                    $error_message .= "<div>Password need include number</div>";
+                    
                 } elseif (strlen($passwords) < 8) {
-                    echo "<div class='alert alert-danger'>Password need at least 8 charecter</div>";
-                    $flag = 1;
+                    $error_message .= "<div>Password need at least 8 charecter</div>";
+                    
                 }
 
 
                 if ($confirm_passwords == "") {
-                    echo "<div class='alert alert-danger'>Please enter your confirm password</div>";
-                    $flag = 1;
+                    $error_message .= "<div>Please enter your confirm password</div>";
+                    
                 } elseif ($passwords != $confirm_passwords) {
-                    echo "<div class='alert alert-danger'>Password need same with confirm password</div>";
-                    $flag = 1;
+                    $error_message .= "<div>Password need same with confirm password</div>";
+                    
                 }
 
                 if ($first_name == "") {
-                    echo "<div class='alert alert-danger'>Please enter your first name</div>";
-                    $flag = 1;
+                    $error_message .= "<div>Please enter your first name</div>";
+                   
                 }
 
                 if ($last_name == "") {
-                    echo "<div class='alert alert-danger'>Please enter your last name</div>";
-                    $flag = 1;
+                    $error_message .= "<div>Please enter your last name</div>";
+                    
                 }
 
                 if ($gender == "") {
-                    echo "<div class='alert alert-danger'>Please do not empty gender</div>";
-                    $flag = 1;
+                    $error_message .= "<div>Please do not empty gender</div>";
+                    
                 }
 
                 if ($date_of_birth == "") {
-                    echo "<div class='alert alert-danger'>Please enter your date of birth</div>";
-                    $flag = 1;
+                    $error_message .= "<div>Please enter your date of birth</div>";
+                    
                 }
                 $day = $_POST['date_of_birth'];
                 $today = date("Ymd");
@@ -111,13 +111,13 @@
                 $date2 = date_create($today);
                 $diff = date_diff($date1, $date2);
                 if ($diff->format("%y") <= "18") {
-                    echo "<div class='alert alert-danger'>User need atleast 18 years old</div>";
-                    $flag = 1;
+                    $error_message .= "<div>User need atleast 18 years old</div>";
+                   
                 }
 
                 if ($account_status == "") {
-                    echo "<div class='alert alert-danger'>Please do not empty account status</div>";
-                    $flag = 1;
+                    $error_message .= "<div>Please do not empty account status</div>";
+                
                 }
                 if ($image) {
 
@@ -128,20 +128,20 @@
 
                     $check = getimagesize($_FILES["image"]["tmp_name"]);
                     if ($check === false) {
-                        $error_message .= "<div class='alert alert-danger'>Submitted file is not an image.</div>";
+                        $error_message .= "<div>Submitted file is not an image.</div>";
                     }
 
                     $allowed_file_types = array("jpg", "jpeg", "png", "gif");
                     if (!in_array($file_type, $allowed_file_types)) {
-                        $error_message .= "<div class='alert alert-danger'>Only JPG, JPEG, PNG, GIF files are allowed.</div>";
+                        $error_message .= "<div>Only JPG, JPEG, PNG, GIF files are allowed.</div>";
                     }
 
                     if (file_exists($target_file)) {
-                        $error_message .= "<div class='alert alert-danger'>Image already exists. Try to change file name.</div>";
+                        $error_message .= "<div>Image already exists. Try to change file name.</div>";
                     }
 
                     if ($_FILES['image']['size'] > (1024000)) {
-                        $error_message .= "<div class='alert alert-danger'>Image must be less than 1 MB in size.</div>";
+                        $error_message .= "<div>Image must be less than 1 MB in size.</div>";
                     }
 
                     if (!is_dir($target_directory)) {
@@ -157,10 +157,13 @@
                     }
                 }
                 if ($image == null) {
-                    $image = "nonprofile.jpg";
+                    $image = "nonprofile2.png";
                 }
 
-                if ($flag == 0) {
+                if (!empty($error_message)){
+                    echo "<div class='alert alert-danger'>$error_message</div>";
+                }
+                else{
 
 
                     include 'config/database.php';
@@ -185,6 +188,11 @@
                         if ($stmt->execute()) {
                             header("Location: customers_read.php?action=update");
                             echo "<div class='alert alert-success bg-success text-white'>Record was saved.</div>";
+                        if (!isset($_SESSION["pass"])){
+                            header('Location:login.php?action=create');
+                        } else {
+                            header('Location:customers_read.php?action=change');
+                        }    
                         } else {
                             echo "<div class='alert alert-danger'>Unable to save record.</div>";
                         }
@@ -226,7 +234,7 @@
                         <td>Images</td>
                         <td>
                             <input type="file" name="image"/>
-                            <input type='submit' name='delete' value='Delete Image' class='btn btn-danger' />
+                            
                         </td>
                     </tr>
                     <tr>

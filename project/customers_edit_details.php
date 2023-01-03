@@ -34,7 +34,7 @@ include 'check.php'
     <?php
     include 'topnav.php'
     ?>
-    <div class="container-fluid image" style="background-image:url('image/bright2.png')">
+    <div class="container-fluid image" style="background-image:url('image/brightbg.jpg')">
         <div class="page-header">
             <h1>Update Customers</h1>
         </div>
@@ -102,9 +102,9 @@ include 'check.php'
                 $diff = date_diff($date1, $date2);
                 $result = $diff->format("%a");
                 $pass = true;
-                $passw = md5($_POST['passw']);
-                $new_pass = md5($_POST['new_pass']);
-                $comfirm_password = md5($_POST['comfirm_password']);
+                $passw = $_POST['passw'];
+                $new_pass = $_POST['new_pass'];
+                $comfirm_password = $_POST['comfirm_password'];
                 $select = "SELECT passwords FROM customers WHERE id = :id ";
                 $stmt = $con->prepare($select);
 
@@ -132,11 +132,10 @@ include 'check.php'
                     $pass = false;
                 }
                 $keeppass = false;
-                if ($passw == "") {
-                    echo 1;
+                if ($passw == "" || $new_pass == "" || $comfirm_password == "") {
                     $keeppass = true;
                 } else {
-                    if ($row['passwords'] == $passw) {
+                    if ($row['passwords'] == md5($passw)) {
                         $lowercase = preg_match('@[a-z]@', $new_pass);
                         $number    = preg_match('@[0-9]@', $new_pass);
                         if (!$lowercase || !$number || strlen($new_pass) < 8) {
@@ -154,12 +153,13 @@ include 'check.php'
                     } else {
                         echo "<div class='alert alert-danger'>Wrong Old Password</div>";
                         $pass = false;
+                        
                     }
                 }
                 if ($keeppass == true) {
-                    $new_pass = $row['passwords'];
+                    $new_pass = $row['passwords'] ;
                 } else {
-                    $new_pass = htmlspecialchars(md5(strip_tags($_POST['new_pass'])));
+                    $new_pass = htmlspecialchars(strip_tags (md5($_POST['new_pass'])));
                 }
 
                 if ($result < 6570) {
@@ -170,58 +170,83 @@ include 'check.php'
                     echo "<div class='alert alert-danger'>You cannot input the future date</div>";
                     $pass = false;
                 }
-                // write update query
-                // in this case, it seemed like we have so many fields to pass and
-                // it is better to label them and not use question marks
-                if (!empty($_FILES['image']['name'])) {
-                    if ($image) {
-                        // upload to file to folder
-                        $target_directory = "uploads/";
-                        $target_file = $target_directory . $image;
-                        $file_type = pathinfo($target_file, PATHINFO_EXTENSION);
-
-                        // make sure that file is a real image
-                        $check = getimagesize($_FILES["image"]["tmp_name"]);
-                        if ($check === false) {
-                            $error_message .= "<div class='alert alert-danger'>Submitted file is not an image.</div>";
-                        }
-                        // make sure certain file types are allowed
-                        $allowed_file_types = array("jpg", "jpeg", "png", "gif");
-                        if (!in_array($file_type, $allowed_file_types)) {
-                            $error_message .= "<div class='alert alert-danger'>Only JPG, JPEG, PNG, GIF files are allowed.</div>";
-                        }
-                        // make sure file does not exist
-                        if (file_exists($target_file)) {
-                            $error_message .= "<div class='alert alert-danger'>Image already exists. Try to change file name.</div>";
-                        }
-                        // make sure submitted file is not too large, can't be larger than 1 MB
-                        if ($_FILES['image']['size'] > (1024000)) {
-                            $error_message .= "<div class='alert alert-danger'>Image must be less than 1 MB in size.</div>";
-                        }
-                        // make sure the 'uploads' folder exists
-                        // if not, create it
-                        if (!is_dir($target_directory)) {
-                            mkdir($target_directory, 0777, true);
-                        }
-                        // if $file_upload_error_messages is still empty
-                        if (empty($error_message)) {
-
-                            // it means there are no errors, so try to upload the file
-                            if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-                                echo "<div class='alert alert-danger>Unable to upload photo.</div>";
-                                echo "<div class='alert alert-danger>Update the record to upload photo.</div>";
+                if($pass == true){
+                    if (!empty($_FILES['image']['name'])) {
+                        if ($image) {
+                            // upload to file to folder
+                            $target_directory = "uploads/";
+                            $target_file = $target_directory . $image;
+                            $file_type = pathinfo($target_file, PATHINFO_EXTENSION);
+                           
+    
+                            // make sure that file is a real image
+                            $check = getimagesize($_FILES["image"]["tmp_name"]);
+                            if ($check === false) {
+                                $error_message .= "<div class='alert alert-danger'>Submitted file is not an image.</div>";
+                                echo 1;
                             }
-                        } else {
-                            echo $error_message;
+                            // make sure certain file types are allowed
+                            $allowed_file_types = array("jpg", "jpeg", "png", "gif");
+                            if (!in_array($file_type, $allowed_file_types)) {
+                                $error_message .= "<div class='alert alert-danger'>Only JPG, JPEG, PNG, GIF files are allowed.</div>";
+                                
+                            }
+                            // make sure file does not exist
+                            if (file_exists($target_file)) {
+                                $error_message .= "<div class='alert alert-danger'>Image already exists. Try to change file name.</div>";
+                            }
+                            // make sure submitted file is not too large, can't be larger than 1 MB
+                            if ($_FILES['image']['size'] > (1024000)) {
+                                $error_message .= "<div class='alert alert-danger'>Image must be less than 1 MB in size.</div>";
+                            }
+                            // make sure the 'uploads' folder exists
+                            // if not, create it
+                            if (!is_dir($target_directory)) {
+                                mkdir($target_directory, 0777, true);
+                            }
+                            // if $file_upload_error_messages is still empty
+                            if (empty($error_message)) {
+    
+                                // it means there are no errors, so try to upload the file
+                                if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+                                    if ($pass == true || empty($error_message)) {
+                                        $query = "UPDATE customers
+                                          SET user=:user, passwords=:new_pass, first_name=:first_name, last_name=:last_name, gender=:gender, date_of_birth=:date_of_birth, account_status=:account_status, image=:image WHERE id = :id";
+                                        // prepare query for excecution
+                                        $stmt = $con->prepare($query);
+                                        // posted values
+    
+                                        // bind the parameters
+                                        $stmt->bindParam(':user', $user);
+                                        $stmt->bindParam(':new_pass', $new_pass);
+                                        $stmt->bindParam(':first_name', $first_name);
+                                        $stmt->bindParam(':last_name', $last_name);
+                                        $stmt->bindParam(':gender', $gender);
+                                        $stmt->bindParam(':date_of_birth', $date_of_birth);
+                                        $stmt->bindParam(':account_status', $account_status);
+                                        $stmt->bindParam(':image', $image);
+                                        $stmt->bindParam(':id', $id);
+    
+                                        // Execute the query
+                                        if ($stmt->execute()) {
+                                            echo "<div class='alert alert-success bg-success text-white'>Please press Save Changes agian to save</div>";
+                                        } else {
+                                            echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
+                                        }
+                                    }
+                                }
+                            } else {
+                                echo $error_message;
+                            }
                         }
-                    }
-                    if ($pass == true || empty($error_message)) {
+                    } else {
+    
                         $query = "UPDATE customers
-                      SET user=:user, passwords=:new_pass, first_name=:first_name, last_name=:last_name, gender=:gender, date_of_birth=:date_of_birth, account_status=:account_status, image=:image WHERE id = :id";
+                        SET user=:user, passwords=:new_pass, first_name=:first_name, last_name=:last_name, gender=:gender, date_of_birth=:date_of_birth, account_status=:account_status WHERE id = :id";
                         // prepare query for excecution
                         $stmt = $con->prepare($query);
                         // posted values
-
+    
                         // bind the parameters
                         $stmt->bindParam(':user', $user);
                         $stmt->bindParam(':new_pass', $new_pass);
@@ -230,49 +255,21 @@ include 'check.php'
                         $stmt->bindParam(':gender', $gender);
                         $stmt->bindParam(':date_of_birth', $date_of_birth);
                         $stmt->bindParam(':account_status', $account_status);
-                        $stmt->bindParam(':image', $image);
                         $stmt->bindParam(':id', $id);
-
+    
                         // Execute the query
                         if ($stmt->execute()) {
-                            echo "<div class='alert alert-success bg-success text-white'>Please press Save Changes agian to save</div>";
+                            //header("Location: customers_read.php?action=update");
+                            echo "<div class='alert alert-success bg-success text-white'>Record was saved.</div>";
                         } else {
                             echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
                         }
                     }
-                } else {
-
-                    $query = "UPDATE customers
-                    SET user=:user, passwords=:new_pass, first_name=:first_name, last_name=:last_name, gender=:gender, date_of_birth=:date_of_birth, account_status=:account_status WHERE id = :id";
-                    // prepare query for excecution
-                    $stmt = $con->prepare($query);
-                    // posted values
-
-                    if ($keeppass == true) {
-                        $new_pass = $row['passwords'];
-                    } else {
-                        $new_pass = htmlspecialchars(md5(strip_tags($_POST['new_pass'])));
-                    }
-
-
-                    // bind the parameters
-                    $stmt->bindParam(':user', $user);
-                    $stmt->bindParam(':new_pass', $new_pass);
-                    $stmt->bindParam(':first_name', $first_name);
-                    $stmt->bindParam(':last_name', $last_name);
-                    $stmt->bindParam(':gender', $gender);
-                    $stmt->bindParam(':date_of_birth', $date_of_birth);
-                    $stmt->bindParam(':account_status', $account_status);
-                    $stmt->bindParam(':id', $id);
-
-                    // Execute the query
-                    if ($stmt->execute()) {
-                        header("Location: customers_read.php?action=update");
-                        echo "<div class='alert alert-success bg-success text-white'>Record was saved.</div>";
-                    } else {
-                        echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
-                    }
                 }
+                // write update query
+                // in this case, it seemed like we have so many fields to pass and
+                // it is better to label them and not use question marks
+                
             }
 
             // show errors
@@ -290,7 +287,7 @@ include 'check.php'
             $target_directory = "uploads/";
             $target_file = $target_directory . $image;
             $file_type = pathinfo($target_file, PATHINFO_EXTENSION);
-            if ($row['image'] == "nonprofile.jpg") {
+            if ($row['image'] == "nonprofile2.png") {
                 echo "<div class='alert alert-danger'>Photo cannot be delete</div>";
             } else {
                 unlink("uploads/" . $row['image']);
@@ -298,7 +295,7 @@ include 'check.php'
                 $_FILES["image"]["name"] = null;
                 if (($_FILES["image"]["name"]) == null
                 ) {
-                    $image = "nonprofile.jpg";
+                    $image = "nonprofile2.png";
                 }
                 $query = "UPDATE customers
                             SET image=:image WHERE id = :id";

@@ -34,6 +34,7 @@ session_start();
             $result = mysqli_query($mysqli, $select);
             $row = mysqli_fetch_assoc($result);
 
+
             if (mysqli_num_rows($result) == 1) {
                 if ($row['passwords'] != $passwords) {
                     echo "<div class='alert alert-danger w-25 d-flex justify-content-center align-self-center ms-auto me-auto'>Your password is incorrect.</div>";
@@ -42,15 +43,21 @@ session_start();
                 } else {
                     header("Location: index.php");
                     $_SESSION["Pass"] = "Pass";
+                    
                 }
             } else {
                 echo "<div class='alert alert-danger w-25 d-flex justify-content-center align-self-center ms-auto me-auto'>Please enter your username and password.</div>";
             }
         };
-
-        if ($_GET) {
-            echo "<div class='alert alert-danger w-25 d-flex justify-content-center align-self-center ms-auto me-auto'>Please make sure you have access</div>";
+        $action = isset($_GET['action']) ? $_GET['action'] : "";
+        
+        if ($action == 'create') {
+            echo "<div class='alert alert-success w-25 d-flex justify-content-center align-self-center ms-auto me-auto'>Account had register successfully.</div>";
         }
+        if ($action == 'Error') {
+            echo "<div class='alert alert-danger w-25 d-flex justify-content-center align-self-center ms-auto me-auto'>Please make sure you have access.</div>";
+        }
+
 
 
         ?>
@@ -79,5 +86,5 @@ session_start();
         </div>
     </div>
 </body>
-    
+
 </html>
