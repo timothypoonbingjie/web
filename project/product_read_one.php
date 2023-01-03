@@ -16,7 +16,7 @@ include 'check.php'
 <body>
     <?php
     include 'topnav.php'
-    ?><div class="container-fluid image" style="background-image:url('image/bright2.png')">
+    ?><div class="container-fluid image" style="background-image:url('image/brightbg.jpg')">
     <!-- container -->
     <div class="container">
         <div class="page-header">

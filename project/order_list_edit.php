@@ -39,7 +39,7 @@ include 'check.php'
     <?php
     include 'topnav.php'
     ?>
-    <div class="container-fluid image" style="background-image:url('image/bright2.png')">
+    <div class="container-fluid image" style="background-image:url('image/brightbg.jpg')">
     <div class="page-header">
         <h1>Edit Order List</h1>
     </div>

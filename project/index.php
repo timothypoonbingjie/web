@@ -77,7 +77,7 @@ include 'check.php'
 
                     // Bind the parameter
                     $stmt->bindParam(1, $id);
-                    echo $id;
+
 
                     // execute our query
                     $stmt->execute();

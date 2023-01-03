@@ -19,7 +19,7 @@ include 'check.php'
 
     <?php
     include 'topnav.php'
-    ?><div class="container-fluid image" style="background-image:url('image/bright2.png')">
+    ?><div class="container-fluid image" style="background-image:url('image/brightbg.jpg')">
         <!-- container -->
         <div class="container">
             <div class="page-header text-center">
@@ -118,7 +118,9 @@ include 'check.php'
                     <td></td>
                     <td>
                         <a href='customers_read.php' class='btn btn-danger'>Back to read Customers</a>
+                        <?php echo "<a href='customers_edit_details.php?id={$id}' class='btn btn-primary m-r-1em mx-2'>Go to customer Edit</a>"; ?>
                         <?php echo "<a href='customers_delete.php?id={$id}' onclick=delete_customers([$id});' class='btn btn-danger'>Delete Customer</a>"; ?>
+
                     </td>
                 </tr>
             </table>

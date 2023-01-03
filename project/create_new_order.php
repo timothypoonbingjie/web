@@ -19,7 +19,7 @@ include 'check.php'
     <?php
     include 'topnav.php'
     ?>
-    <div class="container-fluid image" style="background-image:url('image/bright2.png')">
+    <div class="container-fluid image" style="background-image:url('image/brightbg.jpg')">
         <div class="container">
 
             <div class="page-header d-flex justify-content-center my-3">
@@ -40,7 +40,7 @@ include 'check.php'
                     $flag = 1;
                 }
                 for ($i = 0; $i < count($product_id); $i++) {
-                    if (empty($product_id[$i])  || $product_id[$i] == 'Select Customer Username') {
+                    if (empty($product_id[$i])  || $product_id[$i] == 'Select product') {
                         echo "<div class='alert alert-danger'>Please choose a product for row $i.</div>";
                         $flag = false;
                     }

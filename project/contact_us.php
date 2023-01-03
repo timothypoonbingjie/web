@@ -26,7 +26,7 @@ include 'check.php'
     <?php
     include 'topnav.php'
     ?>
-    <div class="container-fluid image" style="background-image:url('image/bright2.png')">
+    <div class="container-fluid image" style="background-image:url('image/brightbg.jpg')">
     <form class="d-flex flex-column mb-3 justify-content-center" action="contact_us.php" method="post">
         Email <input type="email" name="email" value="" class='form-control' placeholder="Please enter your email"> <br>
         Title <input type="text" name="subject" value="" class='form-control' placeholder="Please enter your Title"> <br>

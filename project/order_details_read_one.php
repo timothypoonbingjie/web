@@ -18,7 +18,7 @@ include 'check.php'
     <!-- container -->
     <?php
     include 'topnav.php'
-    ?><div class="container-fluid image" style="background-image:url('image/bright2.png')">
+    ?><div class="container-fluid image" style="background-image:url('image/brightbg.jpg')">
     <div class="page-header">
         <h1>Read Order Details</h1>
     </div>

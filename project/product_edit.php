@@ -35,7 +35,7 @@ include 'check.php'
     <!-- container -->
     <?php
     include 'topnav.php'
-    ?><div class="container-fluid image" style="background-image:url('image/bright2.png')">
+    ?><div class="container-fluid image" style="background-image:url('image/brightbg.jpg')">
     <div class="page-header">
         <h1>Update Product</h1>
     </div>
@@ -204,7 +204,7 @@ include 'check.php'
         $target_directory = "uploads/";
         $target_file = $target_directory . $image;
         $file_type = pathinfo($target_file, PATHINFO_EXTENSION);
-        if ($row['image'] == "nonprofile.jpg") {
+        if ($row['image'] == "emptybox.png") {
             echo "<div class='alert alert-danger'>Photo cannot be delete</div>";
         } else {
             unlink("uploads/" . $row['image']);
