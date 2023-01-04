@@ -1,6 +1,6 @@
 <nav class="navbar sticky-top bg-body-tertiary navbar-expand-lg navbar-light bg-info">
 
-    <a class="navbar-brand bg-success rounded-4 m-3 p-2 text-white" href="index.php">Home</a>
+    <a href="index.php" class="p-3"><img src="image/TP.jpg" height="50px"></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -40,6 +40,5 @@
     </div>
     <div class="px-3">
         <a href="log_out.php">Log Out</a>
-        <a href="index.php" class="p-3"><img src="image/TP.jpg" height="50px"></a>
     </div>
 </nav>

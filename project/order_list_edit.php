@@ -75,7 +75,20 @@ include 'check.php'
         $product_id = $_POST['product_id'];
         $quantity = $_POST['quantity'];
         if ($username == 'Select Customer Username') {
-            $error_message .= "<div class='alert alert-danger'>Please choose your order.</div>";
+            echo "<div class='alert alert-danger'>Please choose your order.</div>";
+            $flag = false;
+        }
+        for ($i = 0; $i < count($product_id); $i++) {
+            if (empty($product_id[$i])  || $product_id[$i] == 'Select product') {
+                $error_message .= "<div class='alert alert-danger'>Please choose a product for your row</div>";
+                $flag = false;
+            }
+            if (empty($quantity[$i])  || $quantity[$i] <= 0) {
+                $error_message .= "<div class='alert alert-danger'>Please enter a valid quantity for your row</div>";
+            }
+        }
+        if ($username == 'Select Customer Username') {
+            $error_message .= "<div class='alert alert-danger'>Please select Customer Username.</div>";
         }
         if ($product_id == ['Select product']) {
             $error_message .= "<div class='alert alert-danger'>Please choose your product.</div>";

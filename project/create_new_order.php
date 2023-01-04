@@ -34,23 +34,23 @@ include 'check.php'
                 $username = $_POST['username'];
                 $product_id = $_POST['product_id'];
                 $quantity = $_POST['quantity'];
-                $flag = 0;
+                $flag = true;
                 if ($username == 'Select Customer Username') {
-                    echo "<div class='alert alert-danger'>Please choose your order.</div>";
-                    $flag = 1;
+                    echo "<div class='alert alert-danger'>Please select Customer Username.</div>";
+                    $flag = false;
                 }
                 for ($i = 0; $i < count($product_id); $i++) {
                     if (empty($product_id[$i])  || $product_id[$i] == 'Select product') {
-                        echo "<div class='alert alert-danger'>Please choose a product for row $i.</div>";
+                        echo "<div class='alert alert-danger'>Please choose a product for row.</div>";
                         $flag = false;
                     }
                     if (empty($quantity[$i])  || $quantity[$i] <= 0) {
-                        echo "<div class='alert alert-danger'>Please enter a valid quantity for row $i.</div>";
+                        echo "<div class='alert alert-danger'>Please enter a valid quantity for row.</div>";
                         $flag = false;
                     }
                 }
 
-                if ($flag == 0) {
+                if ($flag == true) {
                     include 'config/database.php';
 
                     try {

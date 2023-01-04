@@ -20,7 +20,7 @@ try {
     $count = $stmt->rowCount();
 
     if ($count > 0) {
-        echo "This product has order so cannot be delete.";
+        header('Location: product_read.php?action=back');
     } else {
         $query = "DELETE FROM products WHERE id = ?";
         $stmt = $con->prepare($query);
@@ -37,6 +37,7 @@ try {
             die('Unable to delete record.');
         }
     }
+    
 }
 // show error
 catch (PDOException $exception) {

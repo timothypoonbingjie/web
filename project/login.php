@@ -43,7 +43,10 @@ session_start();
                 } else {
                     header("Location: index.php");
                     $_SESSION["Pass"] = "Pass";
-                    
+                    $_SESSION["username"] = "$user";
+                    if($_SESSION["username"] != "timothy"){
+                        $_SESSION["user"] = "user";
+                    }
                 }
             } else {
                 echo "<div class='alert alert-danger w-25 d-flex justify-content-center align-self-center ms-auto me-auto'>Please enter your username and password.</div>";

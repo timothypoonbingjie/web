@@ -30,10 +30,15 @@ include 'check.php'
         include 'config/database.php';
 
         $action = isset($_GET['action']) ? $_GET['action'] : "";
+        
+
 
         // if it was redirected from delete.php
         if ($action == 'deleted') {
             echo "<div class='alert alert-success bg-success text-white'>Record was deleted.</div>";
+        }
+        if ($action == 'back') {
+            echo "<div class='alert alert-success bg-danger text-white'>This product has order so cannot be delete.</div>";
         }
         if ($action == 'update') {
             echo "<div class='alert alert-success bg-success text-white'>Record saved.</div>";

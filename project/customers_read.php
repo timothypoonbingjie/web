@@ -97,7 +97,11 @@ include 'check.php'
                     echo "<a href='customers_edit_details.php?id={$id}' class='btn btn-primary m-r-1em'>Edit</a>";
 
                     // we will use this links on next part of this post
-                    echo "<a href='#' onclick='delete_customers({$id});'  class='btn btn-danger'>Delete</a>";
+                    if (isset($_SESSION["user"])) {
+                        echo "";
+                    } else {
+                        echo "<a href='#' onclick='customers_delete({$id});'  class='mx-2 btn btn-danger'>Delete</a>";
+                    }
                     echo "</td>";
                     echo "</tr>";
                 }
@@ -118,7 +122,6 @@ include 'check.php'
             function delete_customers(id) {
 
                 if (confirm('Are you sure?')) {
-
                     window.location = 'customers_delete.php?id=' + id;
                 }
 
