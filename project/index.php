@@ -119,7 +119,7 @@ include 'check.php'
             <div class="container my-3">
                 <div class="my-3">
                     <?php
-                    $query = "SELECT order_summary.id as summaryid, username, sum(price*quantity) AS HIGHEST FROM order_summary INNER JOIN order_detials ON order_detials.order_id = order_summary.id INNER JOIN products ON products.id = order_detials.product_id GROUP BY order_summary.id ORDER BY HIGHEST DESC";
+                    $query = "SELECT order_summary.id as newid, sum(price*quantity) AS HIGHEST FROM order_summary INNER JOIN order_detials ON order_detials.order_id = order_summary.id INNER JOIN products ON products.id = order_detials.product_id GROUP BY order_summary.id ORDER BY HIGHEST DESC";
                     $stmt = $con->prepare($query);
                     $stmt->execute();
                     $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -135,7 +135,7 @@ include 'check.php'
                             <th>Highest Amount</th>
                         </tr>
                         <tr class='table-success'>
-                            <td><a href="order_list_read.php?id=<?php echo urlencode($id); ?>"><?php echo htmlspecialchars($id, ENT_QUOTES);  ?></td>
+                            <td><a href="order_list_read.php?id=<?php echo urlencode($newid); ?>"><?php echo htmlspecialchars($newid, ENT_QUOTES);  ?></td>
                             <td><?php echo htmlspecialchars($date, ENT_QUOTES);  ?></td>
                             <td><?php echo htmlspecialchars($username, ENT_QUOTES);  ?></td>
                             <td><?php $amount = htmlspecialchars(round($HIGHEST), ENT_QUOTES);
